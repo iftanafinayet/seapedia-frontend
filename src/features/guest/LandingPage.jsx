@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ShoppingBag, Star, Heart, ChevronLeft, ChevronRight, Bell, Sparkles, Zap, ArrowRight, Megaphone } from 'lucide-react';
+import { ShoppingBag, Star, Heart, ChevronLeft, ChevronRight, Bell, Sparkles, Zap, ArrowRight, Megaphone, Shirt, Smartphone, Home, Trophy } from 'lucide-react';
 import Skeleton from '../../components/ui/Skeleton';
 import Button from '../../components/ui/Button';
 import { getProducts, getReviews, getTopRatedProducts, getDealsOfTheDay, getSiteConfig } from '../../api/guest';
@@ -9,14 +9,13 @@ import { formatCurrency } from '../../lib/utils';
 import useAuthStore from '../../stores/authStore';
 import NotificationDropdown from '../../components/shared/NotificationDropdown';
 import { cn } from '../../lib/utils';
-
 const categories = [
-  { label: 'Beauty', icon: '💄', keyword: 'beauty' },
-  { label: 'Fashion', icon: '👕', keyword: 'fashion' },
-  { label: 'Electronic', icon: '📱', keyword: 'elektronik' },
-  { label: 'Grocery', icon: '🛒', keyword: 'grocery' },
-  { label: 'Home', icon: '🏠', keyword: 'home' },
-  { label: 'Sport', icon: '⚽', keyword: 'sport' },
+  { label: 'Beauty', icon: Sparkles, keyword: 'beauty' },
+  { label: 'Fashion', icon: Shirt, keyword: 'fashion' },
+  { label: 'Electronic', icon: Smartphone, keyword: 'elektronik' },
+  { label: 'Grocery', icon: ShoppingBag, keyword: 'grocery' },
+  { label: 'Home', icon: Home, keyword: 'home' },
+  { label: 'Sport', icon: Trophy, keyword: 'sport' },
 ];
 
 const getProductImage = (product) => {
@@ -221,7 +220,7 @@ export default function LandingPage() {
         <div className="flex gap-3 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
           {categories.map((cat) => (
             <Link key={cat.label} to={`/products?search=${cat.keyword}`} className="flex flex-col items-center shrink-0 w-[72px]">
-              <div className="w-[60px] h-[60px] rounded-xl bg-surface-container-low flex items-center justify-center text-2xl mb-1.5">{cat.icon}</div>
+              <div className="w-[60px] h-[60px] rounded-xl bg-surface-container-low flex items-center justify-center text-2xl mb-1.5"><cat.icon /></div>
               <span className="text-[11px] font-medium text-on-surface-variant text-center">{cat.label}</span>
             </Link>
           ))}
@@ -378,7 +377,7 @@ export default function LandingPage() {
               className="flex flex-col items-center p-6 bg-surface-container-lowest rounded-xl border border-outline-variant hover:border-primary hover:shadow-card-hover transition-all group"
             >
               <div className="w-16 h-16 rounded-2xl bg-surface-container-low flex items-center justify-center text-3xl mb-3 group-hover:scale-110 transition-transform">
-                {cat.icon}
+                <cat.icon />
               </div>
               <span className="text-[14px] font-semibold text-on-surface group-hover:text-primary transition-colors">{cat.label}</span>
             </Link>
@@ -420,13 +419,13 @@ export default function LandingPage() {
           </div>
 
           {/* CTA */}
-          <div className="mt-10 max-w-3xl mx-auto bg-primary p-8 rounded-xl flex items-center justify-between text-on-primary">
-            <div className="max-w-md">
-              <h4 className="text-[24px] font-semibold mb-2">Ingin membagikan pengalaman Anda?</h4>
-              <p className="text-[16px] text-on-primary/80">Bergabunglah dengan komunitas pelaut profesional SEAPEDIA.</p>
+          <div className="mt-10 max-w-full h-48 bg-primary p-8 rounded-xl flex items-center justify-between text-on-primary">
+            <div className="max-w-full">
+              <h4 className="text-[24px] pl-6 font-extrabold">Ingin membagikan pengalaman Anda?</h4>
+              <p className="text-[16px]  pl-6 text-on-primary/80">Bergabunglah dengan komunitas pelaut profesional SEAPEDIA.</p>
             </div>
             <Link to="/reviews">
-              <button className="bg-white text-primary px-6 py-3 rounded-[8px] text-[14px] font-semibold hover:bg-white/90 transition-all active:scale-[0.98] shrink-0">
+              <button className="bg-white text-primary px-6 py-3 mr-6 rounded-[8px] text-[14px] font-semibold hover:bg-white/90 transition-all active:scale-[0.98] shrink-0">
                 Tulis Ulasan
               </button>
             </Link>

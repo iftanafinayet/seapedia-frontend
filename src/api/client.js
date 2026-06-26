@@ -2,7 +2,11 @@ import axios from 'axios';
 import useAuthStore from '../stores/authStore';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://seapedia-backend-production.up.railway.app/api',
+  baseURL:
+    import.meta.env.VITE_API_BASE_URL ||
+    (import.meta.env.DEV
+      ? 'http://localhost:5000/api'
+      : 'https://seapedia-backend-production.up.railway.app/api'),
   timeout: 30000,
 });
 
