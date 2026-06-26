@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ShoppingBag, Star, Heart, ChevronLeft, ChevronRight, Bell, Sparkles, Zap, ArrowRight, Megaphone } from 'lucide-react';
 import Skeleton from '../../components/ui/Skeleton';
 import Button from '../../components/ui/Button';
-import { getProducts, getReviews, getTopRatedProducts, getDealsOfTheDay } from '../../api/guest';
+import { getProducts, getReviews, getTopRatedProducts, getDealsOfTheDay, getSiteConfig } from '../../api/guest';
 import { formatCurrency } from '../../lib/utils';
 import useAuthStore from '../../stores/authStore';
 import NotificationDropdown from '../../components/shared/NotificationDropdown';
@@ -192,6 +192,15 @@ export default function LandingPage() {
     select: (res) => res.data.data || [],
   });
 
+  const { data: siteConfig } = useQuery({
+    queryKey: ['siteConfig'],
+    queryFn: getSiteConfig,
+    select: (res) => res.data.data,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const hero = siteConfig || {};
+
   const safeProducts = products || [];
   const safeReviews = reviews || [];
 
@@ -326,14 +335,14 @@ export default function LandingPage() {
             Premium Marketplace
           </span>
           <h2 className="text-[48px] font-bold leading-[56px] tracking-[-0.02em] text-on-surface mb-6 max-w-2xl">
-            Belanja Mudah di <span className="text-primary">SEAPEDIA</span>
+            {hero.heroTitle || 'Belanja Mudah di SEAPEDIA'}
           </h2>
           <p className="text-[18px] leading-[28px] text-on-surface-variant mb-10 max-w-lg">
-            Temukan perlengkapan maritim terbaik dari seluruh dunia dalam satu platform. Kualitas terjamin untuk petualangan laut Anda.
+            {hero.heroSubtitle || 'Temukan perlengkapan maritim terbaik dari seluruh dunia dalam satu platform. Kualitas terjamin untuk petualangan laut Anda.'}
           </p>
           <div className="flex gap-4">
-            <Link to="/products">
-              <Button size="lg" className="px-8 py-4 text-[14px] font-semibold">Mulai Belanja</Button>
+            <Link to={hero.heroCtaLink || '/products'}>
+              <Button size="lg" className="px-8 py-4 text-[14px] font-semibold">{hero.heroCtaText || 'Mulai Belanja'}</Button>
             </Link>
             <Link to="/products">
               <button className="border border-primary text-primary px-8 py-4 rounded-[8px] text-[14px] font-semibold hover:bg-primary/5 transition-all active:scale-[0.98]">

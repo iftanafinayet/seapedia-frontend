@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Outlet, NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, Ticket, Clock, CalendarClock, Sparkles, ArrowLeftRight, LogOut } from 'lucide-react';
+import { LayoutDashboard, Ticket, Clock, CalendarClock, Sparkles, ArrowLeftRight, LogOut, Layout } from 'lucide-react';
 import useAuthStore from '../stores/authStore';
 import BottomNav from '../components/shared/BottomNav';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
@@ -8,6 +8,7 @@ import { cn } from '../lib/utils';
 
 const adminLinks = [
   { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Overview' },
+  { to: '/admin/hero', icon: Layout, label: 'Hero' },
   { to: '/admin/deals', icon: Sparkles, label: 'Deals' },
   { to: '/admin/vouchers', icon: Ticket, label: 'Vouchers' },
   { to: '/admin/overdue', icon: Clock, label: 'Overdue' },

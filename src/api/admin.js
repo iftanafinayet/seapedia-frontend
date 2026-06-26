@@ -15,3 +15,5 @@ export const simulateNextDay = () => api.post('/admin/simulate-next-day');
 export const processOverdue = () => api.post('/admin/process-overdue');
 export const getProducts = () => api.get('/admin/products');
 export const toggleDealProduct = (id) => api.put(`/admin/products/${id}/deal`);
+export const getSiteConfig = () => api.get('/admin/site-config');
+export const updateSiteConfig = (data) => api.put('/admin/site-config', data);

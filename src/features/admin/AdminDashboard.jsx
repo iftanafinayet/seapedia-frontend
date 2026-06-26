@@ -17,6 +17,8 @@ export default function AdminDashboard() {
     queryKey: ['admin', 'dashboard'],
     queryFn: getAdminDashboard,
     select: (res) => res.data.data,
+    staleTime: 0,
+    refetchOnMount: true,
   });
 
   const overdueOrders = dashboard?.overdueOrders || [];
@@ -99,7 +101,9 @@ export default function AdminDashboard() {
             <div>
               <p className="text-[14px] font-semibold text-error">Order Overdue</p>
               <p className="text-[32px] font-bold text-error mt-0.5">{overdueCount}</p>
-              <p className="text-[12px] text-error/60">Action Required</p>
+              <p className="text-[12px] text-error/60">
+                {dashboard?.refundedOrders?.length || 0} direfund
+              </p>
             </div>
           </div>
           <Link to="/admin/overdue">

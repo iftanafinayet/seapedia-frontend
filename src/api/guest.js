@@ -9,3 +9,4 @@ export const getProductReviews = (id) => api.get(`/products/${id}/reviews`);
 export const createProductReview = (id, data) => api.post(`/products/${id}/reviews`, data);
 export const getStore = (id) => api.get(`/stores/${id}`);
 export const getDealsOfTheDay = () => api.get('/deals');
+export const getSiteConfig = () => api.get('/site-config');

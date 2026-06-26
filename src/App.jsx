@@ -49,6 +49,7 @@ import VoucherPage from './features/admin/VoucherPage'
 import OverduePage from './features/admin/OverduePage'
 import SimulatePage from './features/admin/SimulatePage'
 import DealOfTheDayPage from './features/admin/DealOfTheDayPage'
+import HeroEditorPage from './features/admin/HeroEditorPage'
 
 export default function App() {
   return (
@@ -110,6 +111,9 @@ export default function App() {
           } />
           <Route path="/admin/deals" element={
             <ProtectedRoute role="Admin"><DealOfTheDayPage /></ProtectedRoute>
+          } />
+          <Route path="/admin/hero" element={
+            <ProtectedRoute role="Admin"><HeroEditorPage /></ProtectedRoute>
           } />
         </Route>
 
