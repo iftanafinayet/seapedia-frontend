@@ -150,9 +150,9 @@
 
 @keyframes scrollReviews {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to { transform: translateX(-25%); }
 }
 
 .animate-scroll-reviews {
-  animation: scrollReviews 30s linear infinite;
+  animation: scrollReviews 40s linear infinite;
 }

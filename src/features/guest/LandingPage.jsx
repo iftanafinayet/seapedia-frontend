@@ -126,14 +126,6 @@ function StarRating({ rating }) {
   );
 }
 
-const dummyReviews = [
-  { reviewerName: 'Capt. Hendra', rating: 5, comment: 'Layanan SEAPEDIA sangat luar biasa. Proses pemesanan mesin kapal sangat transparan dan pengirimannya jauh lebih cepat dari yang saya bayangkan.' },
-  { reviewerName: 'Budi Santoso', rating: 5, comment: 'Sangat mudah mencari GPS yang spesifik. Interface-nya bersih dan informatif.' },
-  { reviewerName: 'Sari Putri', rating: 5, comment: 'Harga kompetitif dan barang 100% original. Top banget pokoknya!' },
-  { reviewerName: 'Dedi Pratama', rating: 4, comment: 'Pengiriman tepat waktu, packing aman. Akan belanja lagi di sini.' },
-  { reviewerName: 'Anisa Rahma', rating: 5, comment: 'Pilihan perlengkapan laut terlengkap. Sangat membantu untuk usaha diving saya.' },
-];
-
 export default function LandingPage() {
   const user = useAuthStore((s) => s.user);
   const { isAuthenticated, activeRole } = useAuthStore();
@@ -244,7 +236,7 @@ export default function LandingPage() {
           <Link to="/reviews" className="text-[12px] font-semibold text-primary">See All</Link>
         </div>
         <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
-          {(safeReviews.length > 0 ? safeReviews : dummyReviews).slice(0, 5).map((r, i) => (
+          {safeReviews.slice(0, 5).map((r, i) => (
             <div key={i} className="shrink-0 w-[80vw] bg-white border border-slate-100 rounded-xl p-4 flex flex-col justify-between shadow-[0_4px_12px_rgb(0,0,0,0.03)]">
               <div>
                 <StarRating rating={r.rating || 5} />
@@ -396,7 +388,7 @@ export default function LandingPage() {
           {/* Auto-scrolling Review Carousel */}
           <div className="relative overflow-hidden">
             <div className="flex gap-6 animate-scroll-reviews hover:[animation-play-state:paused]" style={{ width: 'max-content' }}>
-              {[...(safeReviews.length > 0 ? safeReviews : dummyReviews), ...(safeReviews.length > 0 ? safeReviews : dummyReviews)].map((r, i) => (
+              {Array.from({ length: 4 }, () => safeReviews).flat().map((r, i) => (
                 <div key={i} className="w-[400px] shrink-0 bg-white/80 backdrop-blur-[12px] border border-white/30 p-6 rounded-xl flex flex-col justify-between">
                   <div>
                     <StarRating rating={r.rating || 5} />

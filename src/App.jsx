@@ -6,6 +6,7 @@ import DriverLayout from './layouts/DriverLayout'
 import AdminLayout from './layouts/AdminLayout'
 import ProtectedRoute from './features/auth/ProtectedRoute'
 import ToastContainer from './components/ui/Toast'
+import ScrollToTop from './components/ScrollToTop'
 
 // Auth
 import LoginPage from './features/auth/LoginPage'
@@ -55,6 +56,7 @@ export default function App() {
   return (
     <>
       <ToastContainer />
+      <ScrollToTop />
       <Routes>
         <Route element={<PublicLayout />}>
           {/* Public Routes */}
