@@ -10,3 +10,4 @@ export const createProductReview = (id, data) => api.post(`/products/${id}/revie
 export const getStore = (id) => api.get(`/stores/${id}`);
 export const getDealsOfTheDay = () => api.get('/deals');
 export const getSiteConfig = () => api.get('/site-config');
+export const getActiveDiscounts = () => api.get('/active-discounts');

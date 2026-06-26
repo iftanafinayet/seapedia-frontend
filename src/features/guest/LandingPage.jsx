@@ -19,34 +19,6 @@ const categories = [
   { label: 'Sport', icon: '⚽', keyword: 'sport' },
 ];
 
-function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState(() => {
-    const now = new Date();
-    const end = new Date(now);
-    end.setHours(23, 59, 59, 999);
-    return Math.max(0, Math.floor((end - now) / 1000));
-  });
-
-  useEffect(() => {
-    if (timeLeft <= 0) return;
-    const timer = setInterval(() => { setTimeLeft((prev) => Math.max(0, prev - 1)); }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const h = Math.floor((timeLeft % 86400) / 3600);
-  const m = Math.floor((timeLeft % 3600) / 60);
-  const s = timeLeft % 60;
-  return (
-    <div className="flex items-center gap-1 text-[12px] font-semibold">
-      <span className="bg-primary-container text-white rounded px-1.5 py-0.5">{String(h).padStart(2, '0')}h</span>
-      <span className="text-outline">:</span>
-      <span className="bg-primary-container text-white rounded px-1.5 py-0.5">{String(m).padStart(2, '0')}m</span>
-      <span className="text-outline">:</span>
-      <span className="bg-primary-container text-white rounded px-1.5 py-0.5">{String(s).padStart(2, '0')}s</span>
-    </div>
-  );
-}
-
 const getProductImage = (product) => {
   const name = product.name?.toLowerCase() || '';
   if (name.includes('phone') || name.includes('smart')) {
@@ -238,8 +210,8 @@ export default function LandingPage() {
               Lihat Semua
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            {deals.slice(0, 4).map(p => <ProductCard key={p.id} product={p} className="w-full" />)}
+          <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
+            {deals.slice(0, 4).map(p => <ProductCard key={p.id} product={p} className="shrink-0 w-[48vw]" />)}
           </div>
         </section>
       )}
@@ -254,22 +226,6 @@ export default function LandingPage() {
             </Link>
           ))}
         </div>
-      </section>
-
-      <section className="mb-5">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-[15px] font-bold text-on-surface">Deals of the day!</h3>
-          <CountdownTimer />
-        </div>
-        {loadingProducts ? (
-          <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
-            {[1, 2, 3, 4].map(i => <Skeleton key={i} className="shrink-0 w-[48vw] aspect-[0.85] rounded-xl" />)}
-          </div>
-        ) : (
-          <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
-            {safeProducts.slice(0, 4).map(p => <ProductCard key={p.id} product={p} className="shrink-0 w-[48vw]" />)}
-          </div>
-        )}
       </section>
 
       <section className="mb-5">

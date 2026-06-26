@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Ticket, Truck, CheckCircle, Bell } from 'lucide-react';
+import { Ticket, Truck, CheckCircle, Bell, Percent } from 'lucide-react';
 import { getBuyerOrders } from '../../api/buyer';
+import { getActiveDiscounts } from '../../api/guest';
 import { formatDateShort } from '../../lib/utils';
 import useAuthStore from '../../stores/authStore';
 import { cn } from '../../lib/utils';
@@ -30,11 +31,19 @@ export default function NotificationDropdown() {
   const { data: orders } = useQuery({
     queryKey: ['orders', 'buyer'],
     queryFn: getBuyerOrders,
-    select: (res) => (res.data.data || []).slice(0, 5),
+    select: (res) => (res.data.data || []).slice(0, 20),
     enabled: open && isAuthenticated,
   });
 
+  const { data: discountsData } = useQuery({
+    queryKey: ['active-discounts'],
+    queryFn: getActiveDiscounts,
+    select: (res) => res.data.data,
+    enabled: open,
+  });
+
   const safeOrders = orders || [];
+  const safeDiscounts = discountsData || { vouchers: [], promos: [] };
 
   const notifications = safeOrders.flatMap((o) => {
     const items = [];
@@ -67,18 +76,36 @@ export default function NotificationDropdown() {
     return items;
   });
 
-  const promoNotif = {
-    id: 'promo-1',
-    type: 'promo',
-    icon: Ticket,
-    title: 'Promo Spesial!',
-    desc: 'Gunakan kode DISKON10 untuk diskon 10%',
-    time: 'Sekarang',
-    timestamp: 0,
-    link: '/products',
-  };
+  const sortedNotifications = [...notifications].sort((a, b) => b.timestamp - a.timestamp);
 
-  const allNotifs = [promoNotif, ...notifications].slice(0, 10);
+  const discountNotifs = [
+    ...safeDiscounts.promos.map((p) => ({
+      id: `promo-${p.id}`,
+      type: 'promo',
+      icon: Ticket,
+      title: `Promo ${p.code}`,
+      desc: p.discountType === 'Percentage'
+        ? `Diskon ${p.discountValue}%${p.minOrder ? `, min belanja Rp${p.minOrder.toLocaleString()}` : ''}`
+        : `Diskon Rp${p.discountValue.toLocaleString()}${p.minOrder ? `, min belanja Rp${p.minOrder.toLocaleString()}` : ''}`,
+      time: 'Tersedia',
+      timestamp: 0,
+      link: '/products',
+    })),
+    ...safeDiscounts.vouchers.map((v) => ({
+      id: `voucher-${v.id}`,
+      type: 'voucher',
+      icon: Percent,
+      title: `Voucher ${v.code}`,
+      desc: v.discountType === 'Percentage'
+        ? `Diskon ${v.discountValue}%${v.minOrder ? `, min belanja Rp${v.minOrder.toLocaleString()}` : ''}`
+        : `Diskon Rp${v.discountValue.toLocaleString()}${v.minOrder ? `, min belanja Rp${v.minOrder.toLocaleString()}` : ''}`,
+      time: 'Tersedia',
+      timestamp: 0,
+      link: '/products',
+    })),
+  ];
+
+  const allNotifs = [...discountNotifs, ...sortedNotifications];
   const hasUnread = notifications.length > 0 && notifications.some((n) => n.timestamp > lastSeen);
 
   // Auto-show dot when new notifications arrive
@@ -133,8 +160,8 @@ export default function NotificationDropdown() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 max-h-[400px] overflow-y-auto bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-card-elevated z-50 animate-scale-in origin-top-right">
-          <div className="p-4 border-b border-outline-variant/10">
+        <div className="absolute right-0 top-full mt-2 w-80 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-card-elevated z-50 animate-scale-in origin-top-right flex flex-col">
+          <div className="p-4 border-b border-outline-variant/10 shrink-0">
             <p className="text-[14px] font-semibold text-on-surface">Notifikasi</p>
           </div>
 
@@ -144,7 +171,7 @@ export default function NotificationDropdown() {
               <p className="text-[13px] text-on-surface-variant">Belum ada notifikasi</p>
             </div>
           ) : (
-            <div className="divide-y divide-outline-variant/10">
+            <div className="divide-y divide-outline-variant/10 max-h-[360px] overflow-y-auto">
               {allNotifs.map((n) => (
                 <Link
                   key={n.id}
@@ -155,6 +182,7 @@ export default function NotificationDropdown() {
                   <div className={cn(
                     'w-9 h-9 rounded-xl flex items-center justify-center shrink-0',
                     n.type === 'promo' && 'bg-amber-50 text-amber-600',
+                    n.type === 'voucher' && 'bg-purple-50 text-purple-600',
                     n.type === 'shipping' && 'bg-blue-50 text-blue-600',
                     n.type === 'delivered' && 'bg-emerald-50 text-emerald-600',
                   )}>
