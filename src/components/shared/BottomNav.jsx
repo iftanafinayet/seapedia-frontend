@@ -59,7 +59,7 @@ export default function BottomNav() {
   if (tabs.length === 0) return null;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-[8px] border-t border-outline-variant/20 shadow-glass-nav h-[72px] flex items-center justify-around z-40 pb-safe lg:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 bg-surface-container-low/90 backdrop-blur-[8px] border-t border-outline-variant/10 shadow-clay h-[72px] flex items-center justify-around z-40 pb-safe lg:hidden">
       {tabs.map((tab) => {
         const isActive = tab.exact ? location.pathname === tab.to : location.pathname.startsWith(tab.to);
         return (
@@ -67,8 +67,8 @@ export default function BottomNav() {
             key={tab.to}
             to={tab.to}
             className={cn(
-              'flex flex-col items-center gap-0.5 min-w-[48px] py-1 px-3 rounded-lg transition-colors',
-              isActive ? 'text-primary' : 'text-outline hover:text-on-surface-variant'
+              'flex flex-col items-center gap-0.5 min-w-[48px] py-1 px-3 rounded-[12px] transition-all duration-200',
+              isActive ? 'text-primary bg-primary/10 shadow-clay-sm' : 'text-outline hover:text-on-surface-variant'
             )}
           >
             <tab.icon className={cn('w-5 h-5 transition-transform', isActive && 'scale-110')} strokeWidth={isActive ? 2.5 : 1.5} />

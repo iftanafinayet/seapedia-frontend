@@ -59,17 +59,17 @@ export default function TopBar({ onMenuClick }) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 bg-surface/95 backdrop-blur-[8px] z-50 border-b border-outline-variant/10">
+      <header className="fixed top-0 left-0 right-0 bg-surface-container-low/90 backdrop-blur-[8px] z-50 shadow-clay">
         {/* Mobile */}
-        <div className="flex lg:hidden items-center justify-between h-[56px] px-4">
-          <div className="flex items-center gap-3">
+        <div className="flex lg:hidden items-center justify-between h-[64px] px-5">
+          <div className="flex items-center gap-4">
             {onMenuClick && (
-              <button className="p-2 -ml-2" onClick={onMenuClick} aria-label="Menu">
+              <button className="p-2 -ml-2 rounded-btn hover:bg-surface-container transition-colors" onClick={onMenuClick} aria-label="Menu">
                 <Menu className="w-5 h-5 text-on-surface-variant" />
               </button>
             )}
-            <Link to="/" className="text-[18px] font-bold text-primary tracking-tight">
-              SEAPEDIA
+            <Link to="/">
+              <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-9" />
             </Link>
           </div>
           <div className="flex items-center gap-1">
@@ -77,7 +77,7 @@ export default function TopBar({ onMenuClick }) {
               <Link to="/buyer/cart" className="relative p-2">
                 <ShoppingCart className="w-5 h-5 text-on-surface-variant" />
                 {cartItems.length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-primary text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-0.5 -right-0.5 bg-tertiary text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-clay-sm">
                     {cartItems.reduce((s, i) => s + i.quantity, 0)}
                   </span>
                 )}
@@ -86,20 +86,20 @@ export default function TopBar({ onMenuClick }) {
             {isAuthenticated ? (
               <>
                 <Link to={getDashboardLink()} className="p-2">
-                  <div className="relative w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center">
+                  <div className="relative w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center shadow-clay-sm">
                     <User className="w-4 h-4 text-primary" />
-                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-surface flex items-center justify-center text-[7px] font-bold text-white">
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-surface-container-lowest flex items-center justify-center text-[7px] font-bold text-white">
                       {activeRole?.[0]}
                     </span>
                   </div>
                 </Link>
-                <button onClick={() => setShowLogoutConfirm(true)} className="p-2">
+                <button onClick={() => setShowLogoutConfirm(true)} className="p-2 rounded-btn hover:bg-surface-container transition-colors">
                   <LogOut className="w-4 h-4 text-outline" />
                 </button>
               </>
             ) : (
               <Link to="/login" className="p-2">
-                <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center shadow-clay-sm">
                   <User className="w-4 h-4 text-primary" />
                 </div>
               </Link>
@@ -110,13 +110,12 @@ export default function TopBar({ onMenuClick }) {
         {/* Desktop */}
         <div className="hidden lg:flex items-center justify-between relative h-16 max-w-content mx-auto px-8">
           {/* Logo */}
-          <Link to="/" className="text-[20px] font-bold text-primary tracking-tight shrink-0 flex items-center gap-2">
-            <span className="w-7 h-7 rounded-md bg-primary flex items-center justify-center text-white text-[15px] font-bold">S</span>
-            SEAPEDIA
+          <Link to="/">
+            <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-10" />
           </Link>
 
-          {/* Nav Links - left align, text only */}
-          <nav className="absolute left-1/2 -translate-x-1/2 flex items-start gap-1">
+          {/* Nav Links - clay chip style */}
+          <nav className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-surface-container rounded-[16px] p-1 shadow-clay-sm">
             {navLinks.map((link) => {
               const isActive = link.exact ? location.pathname === link.to : location.pathname.startsWith(link.to);
               return (
@@ -124,10 +123,10 @@ export default function TopBar({ onMenuClick }) {
                   key={link.to}
                   to={link.to}
                   className={cn(
-                    'px-4 py-3 text-[14px] font-medium transition-all duration-200 border-b-2',
+                    'px-4 py-2 text-[14px] font-medium rounded-[12px] transition-all duration-200',
                     isActive
-                      ? 'text-primary border-primary'
-                      : 'text-on-surface-variant border-transparent hover:text-on-surface hover:border-outline-variant'
+                      ? 'bg-primary text-white shadow-clay-sm'
+                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
                   )}
                 >
                   {link.label}
@@ -139,10 +138,10 @@ export default function TopBar({ onMenuClick }) {
           {/* Profile + Logout */}
           <div className="flex items-center gap-2">
             {(!isAuthenticated || activeRole !== 'Driver') && (
-              <Link to="/buyer/cart" className="relative p-2 rounded-full hover:bg-surface-container-low transition-colors">
+              <Link to="/buyer/cart" className="relative p-2 rounded-btn hover:bg-surface-container transition-colors">
                 <ShoppingCart className="w-5 h-5 text-on-surface-variant" />
                 {cartItems.length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-error text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-0.5 -right-0.5 bg-tertiary text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-clay-sm">
                     {cartItems.reduce((s, i) => s + i.quantity, 0)}
                   </span>
                 )}
@@ -151,25 +150,25 @@ export default function TopBar({ onMenuClick }) {
 
             <NotificationDropdown />
             {isAuthenticated ? (
-              <div className="flex items-center gap-2 ml-2 pl-2 border-l border-outline-variant/30">
-                <Link to={getDashboardLink()} className="flex items-center gap-2 p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+              <div className="flex items-center gap-2 ml-2 pl-2">
+                <Link to={getDashboardLink()} className="flex items-center gap-2 p-1.5 rounded-btn bg-surface-container shadow-clay-sm hover:shadow-clay-inset transition-all duration-200">
                   <div className="relative w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center">
                     <User className="w-4 h-4 text-primary" />
-                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-surface flex items-center justify-center text-[7px] font-bold text-white">
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-surface-container-lowest flex items-center justify-center text-[7px] font-bold text-white">
                       {activeRole?.[0]}
                     </span>
                   </div>
-                  <div className="hidden xl:block text-left">
+                  <div className="hidden xl:block text-left pr-1.5">
                     <span className="text-[13px] font-medium text-on-surface block leading-tight">{user?.username || 'User'}</span>
                     <span className="text-[11px] text-primary font-semibold">{activeRole}</span>
                   </div>
                 </Link>
-                <button onClick={() => setShowLogoutConfirm(true)} className="p-2 rounded-lg hover:bg-surface-container-low transition-colors text-outline hover:text-error" aria-label="Logout">
+                <button onClick={() => setShowLogoutConfirm(true)} className="p-2 rounded-btn hover:bg-surface-container transition-colors text-outline hover:text-error" aria-label="Logout">
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 ml-2 pl-2 border-l border-outline-variant/30">
+              <div className="flex items-center gap-2 ml-2 pl-2">
                 <Link to="/login"><button className="btn-ghost btn-sm">Login</button></Link>
                 <Link to="/register"><button className="btn-primary btn-sm">Register</button></Link>
               </div>

@@ -56,13 +56,10 @@ export default function DesktopSidebar() {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant h-full fixed left-0 top-0 bottom-0 z-50">
+    <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant/20 h-full fixed left-0 top-0 bottom-0 z-50 shadow-clay">
       {/* Branding */}
       <Link to="/" className="px-6 py-8 block">
-        <h1 className="text-[24px] font-bold text-primary tracking-tight flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white text-[18px] font-bold">S</span>
-          SEAPEDIA
-        </h1>
+        <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-12" />
         <p className="text-[12px] font-medium text-on-surface-variant mt-1 uppercase tracking-[0.05em]">
           {isAuthenticated ? `${role} Portal` : 'Marketplace'}
         </p>
@@ -77,10 +74,10 @@ export default function DesktopSidebar() {
             end={link.exact}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 px-4 py-3 rounded-[8px] text-[14px] font-semibold transition-all duration-200 relative',
+                'flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-semibold transition-all duration-200 relative',
                 isActive
-                  ? 'bg-primary/5 border-l-[3px] border-primary text-primary'
-                  : 'text-on-surface-variant hover:bg-surface-container-high border-l-[3px] border-transparent'
+                  ? 'bg-primary/10 text-primary shadow-clay-sm'
+                  : 'text-on-surface-variant hover:bg-surface-container-high'
               )
             }
           >
@@ -91,11 +88,11 @@ export default function DesktopSidebar() {
       </nav>
 
       {/* Bottom Section */}
-      <div className="px-2 py-4 border-t border-outline-variant space-y-1">
+      <div className="px-2 py-4 border-t border-outline-variant/20 space-y-1">
         {isAuthenticated && (
           <Link
             to="/choose-role"
-            className="flex items-center gap-3 px-4 py-3 rounded-[8px] text-[14px] font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
+            className="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
           >
             <ArrowLeftRight className="w-5 h-5" />
             Switch Role
@@ -108,8 +105,8 @@ export default function DesktopSidebar() {
               to="/buyer/wallet"
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 px-4 py-3 rounded-[8px] text-[14px] font-medium transition-colors',
-                  isActive ? 'text-primary bg-primary/5' : 'text-on-surface-variant hover:bg-surface-container-high'
+                  'flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-medium transition-colors',
+                  isActive ? 'text-primary bg-primary/10 shadow-clay-sm' : 'text-on-surface-variant hover:bg-surface-container-high'
                 )
               }
             >
@@ -120,8 +117,8 @@ export default function DesktopSidebar() {
               to="/reviews"
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 px-4 py-3 rounded-[8px] text-[14px] font-medium transition-colors',
-                  isActive ? 'text-primary bg-primary/5' : 'text-on-surface-variant hover:bg-surface-container-high'
+                  'flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-medium transition-colors',
+                  isActive ? 'text-primary bg-primary/10 shadow-clay-sm' : 'text-on-surface-variant hover:bg-surface-container-high'
                 )
               }
             >
@@ -131,7 +128,7 @@ export default function DesktopSidebar() {
 
             {/* User Info */}
             <div className="flex items-center gap-3 px-4 py-3 mt-2">
-              <div className="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-[14px] shrink-0">
+              <div className="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-[14px] shrink-0 shadow-clay-sm">
                 {user?.username?.charAt(0)?.toUpperCase() || 'U'}
               </div>
               <div className="min-w-0 flex-1">
@@ -140,7 +137,7 @@ export default function DesktopSidebar() {
               </div>
               <button
                 onClick={handleLogout}
-                className="p-1.5 rounded-lg hover:bg-surface-container-high transition-colors text-outline hover:text-error"
+                className="p-1.5 rounded-btn hover:bg-surface-container-high transition-colors text-outline hover:text-error"
                 aria-label="Logout"
               >
                 <LogOut className="w-4 h-4" />
@@ -151,14 +148,14 @@ export default function DesktopSidebar() {
           <>
             <Link
               to="/login"
-              className="flex items-center gap-3 px-4 py-3 rounded-[8px] text-[14px] font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
+              className="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
             >
               <User className="w-5 h-5" />
               Login / Register
             </Link>
             <a
               href="#"
-              className="flex items-center gap-3 px-4 py-3 rounded-[8px] text-[14px] font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
+              className="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
             >
               <HelpCircle className="w-5 h-5" />
               Help
