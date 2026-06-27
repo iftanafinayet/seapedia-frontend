@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import PublicLayout from './layouts/PublicLayout'
 import DashboardLayout from './layouts/DashboardLayout'
 import SellerLayout from './layouts/SellerLayout'
@@ -7,6 +8,7 @@ import AdminLayout from './layouts/AdminLayout'
 import ProtectedRoute from './features/auth/ProtectedRoute'
 import ToastContainer from './components/ui/Toast'
 import ScrollToTop from './components/ScrollToTop'
+import SplashScreen from './components/shared/SplashScreen'
 
 // Auth
 import LoginPage from './features/auth/LoginPage'
@@ -53,8 +55,24 @@ import DealOfTheDayPage from './features/admin/DealOfTheDayPage'
 import HeroEditorPage from './features/admin/HeroEditorPage'
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    if (showSplash) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [showSplash]);
+
+  const handleSplashDone = () => {
+    setShowSplash(false);
+  };
+
   return (
     <>
+      {showSplash && <SplashScreen onDone={handleSplashDone} />}
       <ToastContainer />
       <ScrollToTop />
       <Routes>
