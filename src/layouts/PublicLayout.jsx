@@ -6,7 +6,7 @@ export default function PublicLayout() {
   return (
     <div className="min-h-dvh bg-surface">
       <TopBar />
-      <main className="pt-[56px] pb-[80px] lg:pt-16 lg:pb-0">
+      <main className="pt-[64px] pb-[80px] lg:pt-16 lg:pb-0">
         <Outlet />
       </main>
       <BottomNav />

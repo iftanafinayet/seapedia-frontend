@@ -41,7 +41,7 @@ export default function Sidebar() {
   const links = roleLinks[activeRole] || [];
 
   return (
-    <aside className="hidden lg:flex flex-col w-60 bg-surface-container-lowest border-r border-outline-variant/20 h-full p-4 gap-1 fixed left-0 top-[56px] bottom-0">
+    <aside className="hidden lg:flex flex-col w-60 bg-surface-container-lowest border-r border-outline-variant/20 h-full p-4 gap-1 fixed left-0 top-[64px] bottom-0">
       <div className="mb-4">
         <p className="text-[11px] font-semibold text-outline uppercase tracking-[0.05em] mb-3 px-2">
           {activeRole}

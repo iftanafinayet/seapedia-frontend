@@ -26,7 +26,7 @@ export default function RoleSelectionPage() {
   };
 
   return (
-    <div className="min-h-[calc(100dvh-56px-76px)] flex flex-col items-center justify-center px-4">
+    <div className="min-h-[calc(100dvh-64px-76px)] flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-[480px] text-center mb-8">
         <h1 className="text-[24px] font-bold text-on-surface">Pilih Peran Anda</h1>
         <p className="text-[14px] text-on-surface-variant mt-2">Pilih peran yang paling sesuai untuk pengalaman terbaik</p>
