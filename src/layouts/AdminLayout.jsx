@@ -29,14 +29,11 @@ export default function AdminLayout() {
   return (
     <div className="min-h-dvh bg-surface flex">
       {/* Sidebar - Desktop */}
-      <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant h-screen fixed left-0 top-0 bottom-0 z-50">
+      <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant/20 h-screen fixed left-0 top-0 bottom-0 z-50 shadow-clay">
         {/* Branding */}
         <Link to="/" className="px-6 py-8 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-error flex items-center justify-center text-white text-[18px] font-bold">S</div>
-          <div>
-            <h1 className="text-[20px] font-bold text-primary tracking-tight">SEAPEDIA</h1>
-            <p className="text-[11px] font-medium text-on-surface-variant uppercase tracking-[0.05em]">Admin Portal</p>
-          </div>
+          <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-14" />
+          <p className="text-[11px] font-medium text-on-surface-variant uppercase tracking-[0.05em]">Admin Portal</p>
         </Link>
 
         {/* Nav Links */}
@@ -47,10 +44,10 @@ export default function AdminLayout() {
               to={link.to}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 px-4 py-3 rounded-lg text-[14px] font-semibold transition-all duration-200',
+                  'flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-semibold transition-all duration-200',
                   isActive
-                    ? 'bg-error/10 border-l-[3px] border-error text-error'
-                    : 'text-on-surface-variant hover:bg-surface-container-high border-l-[3px] border-transparent'
+                    ? 'bg-tertiary/10 text-tertiary shadow-clay-sm'
+                    : 'text-on-surface-variant hover:bg-surface-container-high'
                 )
               }
             >
@@ -61,10 +58,10 @@ export default function AdminLayout() {
         </nav>
 
         {/* Bottom */}
-        <div className="p-4 mt-auto border-t border-outline-variant space-y-3">
+        <div className="p-4 mt-auto border-t border-outline-variant/20 space-y-3">
           {/* User Info */}
           <div className="flex items-center gap-3 px-2 py-1">
-            <div className="w-9 h-9 rounded-full bg-error-container flex items-center justify-center text-error font-bold text-[14px] shrink-0">
+            <div className="w-9 h-9 rounded-full bg-tertiary-container flex items-center justify-center text-tertiary font-bold text-[14px] shrink-0 shadow-clay-sm">
               {user?.username?.charAt(0)?.toUpperCase() || 'A'}
             </div>
             <div className="min-w-0 flex-1">
@@ -73,7 +70,7 @@ export default function AdminLayout() {
             </div>
             <button
               onClick={() => setLogoutOpen(true)}
-              className="p-2 rounded-lg hover:bg-surface-container-high transition-colors text-outline hover:text-error"
+              className="p-2 rounded-btn hover:bg-surface-container-high transition-colors text-outline hover:text-error"
               aria-label="Logout"
             >
               <LogOut className="w-4 h-4" />
@@ -85,17 +82,17 @@ export default function AdminLayout() {
       {/* Main Content */}
       <main className="flex-1 pt-0 pb-[80px] lg:pt-0 lg:pb-0 lg:ml-[240px]">
         {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between px-4 h-[56px] bg-surface-container-low border-b border-outline-variant/20">
-          <Link to="/" className="text-[18px] font-bold text-primary tracking-tight">
-            SEAPEDIA
+        <div className="lg:hidden flex items-center justify-between px-5 h-[64px] bg-surface-container-low/90 backdrop-blur-[8px] border-b border-outline-variant/20 shadow-clay-sm">
+          <Link to="/">
+            <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-7" />
           </Link>
           <div className="flex items-center gap-1">
-            <span className="text-[11px] font-semibold text-error bg-error-container/40 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-semibold text-tertiary bg-tertiary-container/40 px-2 py-0.5 rounded-full">
               Admin
             </span>
             <button
               onClick={() => setLogoutOpen(true)}
-              className="p-2 rounded-lg hover:bg-surface-container-high transition-colors text-outline hover:text-error"
+              className="p-2 rounded-btn hover:bg-surface-container-high transition-colors text-outline hover:text-error"
               aria-label="Logout"
             >
               <LogOut className="w-4 h-4" />
