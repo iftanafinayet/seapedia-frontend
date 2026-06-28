@@ -7,7 +7,6 @@ import { cn } from '../lib/utils';
 const driverLinks = [
   { to: '/driver/dashboard', icon: LayoutDashboard, label: 'Home' },
   { to: '/driver/jobs', icon: Package, label: 'Jobs' },
-  { to: '/driver/history', icon: History, label: 'History' },
 ];
 
 export default function DriverLayout() {
@@ -23,7 +22,7 @@ export default function DriverLayout() {
     <div className="min-h-dvh bg-surface flex">
       {/* Sidebar */}
       <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant/20 h-screen fixed left-0 top-0 bottom-0 z-50 shadow-clay">
-        <Link to="/" className="px-6 py-8 flex items-center gap-3">
+        <Link to="/driver/dashboard" className="px-6 py-8 flex items-center gap-3">
           <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-14" />
           <p className="text-[11px] font-medium text-on-surface-variant uppercase tracking-[0.05em]">Driver Portal</p>
         </Link>

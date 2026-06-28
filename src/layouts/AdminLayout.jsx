@@ -31,7 +31,7 @@ export default function AdminLayout() {
       {/* Sidebar - Desktop */}
       <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant/20 h-screen fixed left-0 top-0 bottom-0 z-50 shadow-clay">
         {/* Branding */}
-        <Link to="/" className="px-6 py-8 flex items-center gap-3">
+        <Link to="/admin/dashboard" className="px-6 py-8 flex items-center gap-3">
           <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-14" />
           <p className="text-[11px] font-medium text-on-surface-variant uppercase tracking-[0.05em]">Admin Portal</p>
         </Link>
@@ -83,7 +83,7 @@ export default function AdminLayout() {
       <main className="flex-1 pt-0 pb-[80px] lg:pt-0 lg:pb-0 lg:ml-[240px]">
         {/* Mobile Header */}
         <div className="lg:hidden flex items-center justify-between px-5 h-[64px] bg-surface-container-low/90 backdrop-blur-[8px] border-b border-outline-variant/20 shadow-clay-sm">
-          <Link to="/">
+          <Link to="/admin/dashboard">
             <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-7" />
           </Link>
           <div className="flex items-center gap-1">

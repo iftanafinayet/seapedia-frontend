@@ -19,7 +19,6 @@ const sellerLinks = [
 const driverLinks = [
   { to: '/driver/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/driver/jobs', icon: Truck, label: 'Jobs' },
-  { to: '/driver/history', icon: History, label: 'History' },
 ];
 
 const adminLinks = [

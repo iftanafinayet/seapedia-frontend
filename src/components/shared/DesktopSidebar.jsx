@@ -26,7 +26,6 @@ const sellerLinks = [
 const driverLinks = [
   { to: '/driver/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/driver/jobs', icon: Truck, label: 'Jobs' },
-  { to: '/driver/history', icon: History, label: 'History' },
 ];
 
 const adminLinks = [
@@ -55,10 +54,17 @@ export default function DesktopSidebar() {
     navigate('/');
   };
 
+  const homeLink = isAuthenticated
+    ? role === 'Buyer' ? '/buyer/dashboard'
+    : role === 'Seller' ? '/seller/dashboard'
+    : role === 'Driver' ? '/driver/dashboard'
+    : role === 'Admin' ? '/admin/dashboard'
+    : '/' : '/';
+
   return (
     <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant/20 h-full fixed left-0 top-0 bottom-0 z-50 shadow-clay">
       {/* Branding */}
-      <Link to="/" className="px-6 py-8 block">
+      <Link to={homeLink} className="px-6 py-8 block">
         <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-12" />
         <p className="text-[12px] font-medium text-on-surface-variant mt-1 uppercase tracking-[0.05em]">
           {isAuthenticated ? `${role} Portal` : 'Marketplace'}

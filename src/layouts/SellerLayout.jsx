@@ -29,7 +29,7 @@ export default function SellerLayout() {
       {/* Sidebar */}
       <aside className="hidden lg:flex flex-col w-[240px] bg-surface-container-low border-r border-outline-variant/20 h-screen fixed left-0 top-0 bottom-0 z-50 shadow-clay">
         {/* Branding */}
-        <Link to="/" className="px-6 py-8 flex items-center gap-3">
+        <Link to="/seller/dashboard" className="px-6 py-8 flex items-center gap-3">
           <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-14" />
           <p className="text-[11px] font-medium text-on-surface-variant uppercase tracking-[0.05em]">Seller Portal</p>
         </Link>

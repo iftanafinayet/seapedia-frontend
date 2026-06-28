@@ -56,6 +56,7 @@ export default function TopBar({ onMenuClick }) {
 
   const role = isAuthenticated && activeRole ? activeRole : 'Guest';
   const navLinks = roleNav[role] || guestNav;
+  const homeLink = isAuthenticated ? getDashboardLink() : '/';
 
   return (
     <>
@@ -68,7 +69,7 @@ export default function TopBar({ onMenuClick }) {
                 <Menu className="w-5 h-5 text-on-surface-variant" />
               </button>
             )}
-            <Link to="/">
+            <Link to={homeLink}>
               <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-9" />
             </Link>
           </div>
@@ -110,7 +111,7 @@ export default function TopBar({ onMenuClick }) {
         {/* Desktop */}
         <div className="hidden lg:flex items-center justify-between relative h-16 max-w-content mx-auto px-8">
           {/* Logo */}
-          <Link to="/">
+          <Link to={homeLink}>
             <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-10" />
           </Link>
 
