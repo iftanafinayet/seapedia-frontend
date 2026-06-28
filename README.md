@@ -183,12 +183,12 @@ src/
 | Input Validation | Zod schemas on all forms (login, register, checkout, product creation) |
 | XSS Prevention | React auto-escapes JSX output; DOMPurify for any user-generated HTML content |
 | Token Storage | JWT stored in Zustand auth store (memory only, cleared on logout) |
-| Request Headers | `Authorization: Bearer` + `X-Active-Role` header sent on every protected API call via Axios interceptor |
+| Request Headers | `Authorization: Bearer <token>` sent on every protected API call via Axios interceptor; no `X-Active-Role` header (role embedded in JWT) |
 | Route Guards | `ProtectedRoute` component wraps all role-specific routes; redirects unauthenticated users to `/login` |
 | CSRF | Same-origin API requests via `credentials: include` on Axios client; no cross-origin form submissions |
-| Role-Based Access | Active role tracked in `authStore`, validated server-side on every request; role switch requires re-authentication |
+| Role-Based Access | Role-scoped JWT tokens: login returns general token → user picks role → gets role-specific token with per-role expiry |
 | Rate Limiting | Login attempts throttled server-side (5 req/min); general API rate limit (200 req/min) |
-| Session | Stateless JWT with 7-day expiry; no server-side sessions |
+| Session | Stateless JWT with role-based expiry: Buyer 4h, Driver 2d, Seller 7d, Admin 7d |
 
 | Concern | Solution | Details |
 |---------|----------|---------|
