@@ -186,7 +186,6 @@ export default function LandingPage() {
             <p className="text-[16px] font-bold text-on-surface">{user?.username || activeRole || 'Guest'}</p>
           </div>
         </div>
-        <NotificationDropdown />
       </section>
 
       {/* Hero Banner */}
@@ -284,10 +283,11 @@ export default function LandingPage() {
   const DesktopLanding = () => (
     <div className="hidden lg:block">
       {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden">
-        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10" />
-        <div className="relative z-20 h-full flex flex-col justify-center px-8 max-w-content mx-auto">
+      <section className="relative">
+        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="w-full h-auto block" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 max-w-content mx-auto pointer-events-none">
+          <div className="pointer-events-auto">
           <span className="inline-block px-3 py-1 bg-primary/80 text-white text-[12px] font-medium rounded-full mb-6 w-fit uppercase tracking-[0.05em] backdrop-blur-sm">
             Premium Marketplace
           </span>
@@ -308,6 +308,7 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
+      </div>
       </section>
 
       {/* Deals of the Day — Desktop */}
