@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Home, ShoppingCart, Package, Store, ClipboardList, Truck, History, LayoutDashboard, Ticket, Clock, Grid3X3, User, LogOut, Settings, HelpCircle, ArrowLeftRight, MessageSquare } from 'lucide-react';
+import { Home, ShoppingCart, Package, Store, ClipboardList, Truck, History, LayoutDashboard, Ticket, Clock, Grid3X3, User, LogOut, UserCircle, HelpCircle, ArrowLeftRight, MessageSquare } from 'lucide-react';
 import useAuthStore from '../../stores/authStore';
 import { cn } from '../../lib/utils';
 
@@ -43,11 +43,12 @@ const roleLinks = {
 };
 
 export default function DesktopSidebar() {
-  const { isAuthenticated, activeRole, user, logout } = useAuthStore();
+  const { isAuthenticated, activeRole, user, roles, logout } = useAuthStore();
   const navigate = useNavigate();
 
   const role = isAuthenticated && activeRole ? activeRole : 'Guest';
   const links = roleLinks[role] || guestLinks;
+  const hasMultipleRoles = roles.length > 1;
 
   const handleLogout = () => {
     logout();
@@ -95,20 +96,10 @@ export default function DesktopSidebar() {
 
       {/* Bottom Section */}
       <div className="px-2 py-4 border-t border-outline-variant/20 space-y-1">
-        {isAuthenticated && (
-          <Link
-            to="/choose-role"
-            className="flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
-          >
-            <ArrowLeftRight className="w-5 h-5" />
-            Switch Role
-          </Link>
-        )}
-
         {isAuthenticated ? (
           <>
             <NavLink
-              to="/buyer/wallet"
+              to="/profile"
               className={({ isActive }) =>
                 cn(
                   'flex items-center gap-3 px-4 py-3 rounded-[12px] text-[14px] font-medium transition-colors',
@@ -116,8 +107,8 @@ export default function DesktopSidebar() {
                 )
               }
             >
-              <Settings className="w-5 h-5" />
-              Settings
+              <UserCircle className="w-5 h-5" />
+              Profil
             </NavLink>
             <NavLink
               to="/reviews"

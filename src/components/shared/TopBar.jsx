@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, LogOut, Menu, Home, Grid3X3, MessageSquare, Ticket, Clock } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Menu, Home, Grid3X3, MessageSquare, Ticket, Clock, ArrowLeftRight } from 'lucide-react';
 import useAuthStore from '../../stores/authStore';
 import useCartStore from '../../stores/cartStore';
 import NotificationDropdown from './NotificationDropdown';
@@ -13,7 +13,11 @@ const guestNav = [
   { to: '/buyer/orders', icon: MessageSquare, label: 'Orders' },
 ];
 
-const buyerNav = guestNav;
+const buyerNav = [
+  { to: '/buyer/dashboard', icon: Home, label: 'Home', exact: true },
+  { to: '/products', icon: Grid3X3, label: 'Katalog' },
+  { to: '/buyer/orders', icon: MessageSquare, label: 'Orders' },
+];
 const sellerNav = guestNav;
 const driverNav = [
   { to: '/driver', icon: Home, label: 'Home' },
@@ -27,18 +31,20 @@ const adminNav = [
 
 const roleNav = {
   Guest: guestNav,
-  Buyer: guestNav,
+  Buyer: buyerNav,
   Seller: guestNav,
   Driver: driverNav,
   Admin: adminNav,
 };
 
 export default function TopBar({ onMenuClick }) {
-  const { isAuthenticated, user, activeRole, logout } = useAuthStore();
+  const { isAuthenticated, user, activeRole, roles, logout } = useAuthStore();
   const cartItems = useCartStore((s) => s.items);
   const navigate = useNavigate();
   const location = useLocation();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const hasMultipleRoles = roles.length > 1;
 
   const handleLogout = () => {
     logout();
@@ -86,7 +92,7 @@ export default function TopBar({ onMenuClick }) {
             )}
             {isAuthenticated ? (
               <>
-                <Link to={getDashboardLink()} className="p-2">
+                <Link to="/profile" className="p-2">
                   <div className="relative w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center shadow-clay-sm">
                     <User className="w-4 h-4 text-primary" />
                     <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-surface-container-lowest flex items-center justify-center text-[7px] font-bold text-white">
@@ -149,10 +155,15 @@ export default function TopBar({ onMenuClick }) {
               </Link>
             )}
 
-            <NotificationDropdown />
-            {isAuthenticated ? (
+                <NotificationDropdown />
+                {hasMultipleRoles && (
+                  <Link to="/choose-role" className="p-2 rounded-btn hover:bg-surface-container transition-colors text-outline hover:text-primary" aria-label="Switch Role">
+                    <ArrowLeftRight className="w-4 h-4" />
+                  </Link>
+                )}
+                {isAuthenticated ? (
               <div className="flex items-center gap-2 ml-2 pl-2">
-                <Link to={getDashboardLink()} className="flex items-center gap-2 p-1.5 rounded-btn bg-surface-container shadow-clay-sm hover:shadow-clay-inset transition-all duration-200">
+                <Link to="/profile" className="flex items-center gap-2 p-1.5 rounded-btn bg-surface-container shadow-clay-sm hover:shadow-clay-inset transition-all duration-200">
                   <div className="relative w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center">
                     <User className="w-4 h-4 text-primary" />
                     <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-surface-container-lowest flex items-center justify-center text-[7px] font-bold text-white">
