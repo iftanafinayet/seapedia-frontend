@@ -1,11 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ShoppingBag, Search, Heart } from 'lucide-react';
+import { ShoppingBag, Search, SlidersHorizontal, X, Check } from 'lucide-react';
 import Skeleton from '../../components/ui/Skeleton';
 import { getProducts } from '../../api/guest';
 import { formatCurrency } from '../../lib/utils';
 import { cn } from '../../lib/utils';
+
+const CATEGORIES = [
+  { label: 'Semua', value: '' },
+  { label: 'Beauty', value: 'Beauty' },
+  { label: 'Fashion', value: 'Fashion' },
+  { label: 'Electronic', value: 'Electronic' },
+  { label: 'Grocery', value: 'Grocery' },
+  { label: 'Home', value: 'Home' },
+  { label: 'Sport', value: 'Sport' },
+];
 
 const filterChips = [
   { label: 'Popular', value: '' },
@@ -93,6 +103,8 @@ export default function ProductListPage() {
   const [activeFilter, setActiveFilter] = useState('');
   const [favorites, setFavorites] = useState({});
   const [page, setPage] = useState(1);
+  const [catOpen, setCatOpen] = useState(false);
+  const [tempCategory, setTempCategory] = useState(categoryParam);
 
   useEffect(() => {
     setPage(1);
@@ -148,24 +160,34 @@ export default function ProductListPage() {
               className="w-full bg-surface-container-lowest border border-outline-variant rounded-xl pl-9 pr-3 py-2.5 text-[14px] text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent transition-all duration-200 shadow-sm"
             />
           </div>
-          {!debouncedSearch && (
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {filterChips.map((chip) => (
-                <button
-                  key={chip.value}
-                  onClick={() => setActiveFilter(chip.value)}
-                  className={cn(
-                    'px-4 py-2 rounded-full text-[13px] font-medium whitespace-nowrap transition-all duration-200 active:scale-95',
-                    activeFilter === chip.value
-                      ? 'bg-primary-container text-white shadow-sm'
-                      : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'
-                  )}
-                >
-                  {chip.label}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="flex gap-2 items-center">
+            {!debouncedSearch && (
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+                {filterChips.map((chip) => (
+                  <button
+                    key={chip.value}
+                    onClick={() => setActiveFilter(chip.value)}
+                    className={cn(
+                      'px-4 py-2 rounded-full text-[13px] font-medium whitespace-nowrap transition-all duration-200 active:scale-95',
+                      activeFilter === chip.value
+                        ? 'bg-primary-container text-white shadow-sm'
+                        : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'
+                    )}
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            <button onClick={() => { setTempCategory(categoryParam); setCatOpen(true); }}
+              className={cn(
+                'px-4 py-2 rounded-full text-[13px] font-medium whitespace-nowrap transition-all duration-200 active:scale-95 flex items-center gap-1.5 shrink-0',
+                categoryParam ? 'bg-primary text-white shadow-sm' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'
+              )}>
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              {categoryParam || 'Kategori'}
+            </button>
+          </div>
         </div>
       </section>
 
@@ -250,6 +272,52 @@ export default function ProductListPage() {
               </div>
             </Link>
           ))}
+        </div>
+      )}
+
+      {/* Category Filter Overlay */}
+      {catOpen && (
+        <div className="fixed inset-0 z-50 flex items-end lg:items-center justify-center" onClick={() => setCatOpen(false)}>
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <div onClick={(e) => e.stopPropagation()}
+            className="relative w-full lg:w-[400px] bg-white rounded-t-2xl lg:rounded-2xl shadow-xl max-h-[70vh] overflow-hidden animate-slideUp">
+            <div className="flex items-center justify-between p-4 border-b border-slate-100">
+              <h3 className="text-[16px] font-bold text-on-surface">Filter Kategori</h3>
+              <button onClick={() => setCatOpen(false)} className="p-1.5 rounded-lg hover:bg-surface-container transition-colors">
+                <X className="w-4 h-4 text-outline" />
+              </button>
+            </div>
+            <div className="p-4 space-y-1 overflow-y-auto max-h-[calc(70vh-60px)]">
+              {CATEGORIES.map((cat) => (
+                <button key={cat.value} onClick={() => setTempCategory(cat.value)}
+                  className={cn(
+                    'w-full flex items-center gap-3 px-3 py-3 rounded-xl text-[14px] font-medium text-left transition-colors',
+                    tempCategory === cat.value ? 'bg-primary/10 text-primary' : 'text-on-surface hover:bg-surface-container'
+                  )}>
+                  <div className={cn('w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors',
+                    tempCategory === cat.value ? 'border-primary bg-primary' : 'border-outline-variant'
+                  )}>
+                    {tempCategory === cat.value && <Check className="w-3 h-3 text-white" />}
+                  </div>
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+            <div className="p-4 border-t border-slate-100 flex gap-2">
+              <button onClick={() => { setTempCategory(''); }} className="flex-1 px-4 py-2.5 rounded-xl border border-outline-variant text-[13px] font-semibold text-on-surface-variant hover:bg-surface-container transition-colors">
+                Reset
+              </button>
+              <button onClick={() => {
+                const params = new URLSearchParams(searchParams);
+                if (tempCategory) params.set('category', tempCategory);
+                else params.delete('category');
+                navigate(`/products?${params.toString()}`);
+                setCatOpen(false);
+              }} className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white text-[13px] font-semibold hover:brightness-110 transition-all">
+                Terapkan
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
