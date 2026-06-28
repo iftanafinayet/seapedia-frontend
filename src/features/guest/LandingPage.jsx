@@ -447,21 +447,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Desktop Footer */}
-      <footer className="border-t border-outline-variant py-8 px-8 bg-surface-container-lowest">
-        <div className="max-w-content mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex flex-col items-center md:items-start">
-            <span className="text-[14px] font-bold text-on-surface">SEAPEDIA</span>
-            <p className="text-[14px] text-secondary mt-2 text-center md:text-left">&copy; 2024 SEAPEDIA Global. All rights reserved.</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-6">
-            <Link to="#" className="text-[14px] text-secondary hover:text-primary hover:underline transition-all">Sitemap</Link>
-            <Link to="#" className="text-[14px] text-secondary hover:text-primary hover:underline transition-all">Privacy Policy</Link>
-            <Link to="#" className="text-[14px] text-secondary hover:text-primary hover:underline transition-all">Terms of Service</Link>
-            <Link to="#" className="text-[14px] text-secondary hover:text-primary hover:underline transition-all">Contact Us</Link>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 
