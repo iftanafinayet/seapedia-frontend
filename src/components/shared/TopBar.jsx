@@ -66,7 +66,7 @@ export default function TopBar({ onMenuClick }) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 bg-surface-container-low/90 backdrop-blur-[8px] z-50 shadow-clay">
+      <header className="fixed top-0 left-0 right-0 bg-[rgba(248,251,255,0.8)] backdrop-blur-[12px] z-50 border-b border-[#e8f0fe]/60">
         {/* Mobile */}
         <div className="flex lg:hidden items-center justify-between h-[64px] px-5">
           <div className="flex items-center gap-4">
