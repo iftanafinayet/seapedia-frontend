@@ -292,9 +292,10 @@ export default function LandingPage() {
                 Premium Marketplace
               </span>
             </div>
-            <h2 className="text-[64px] font-extrabold leading-[110%] tracking-[-2px] text-[#111827] max-w-[600px] mb-[28px]">
-              Belanja Cerdas Dimulai di{' '}
-              <span className="bg-gradient-to-r from-[#1C61B7] to-[#6CBDEE] bg-clip-text text-transparent">
+            <h2 className="text-[64px] font-extrabold leading-[110%] tracking-[-2px] max-w-[600px] mb-[28px]">
+              <span className="text-[#1A237E]">Belanja Cerdas</span>{' '}
+              <span className="bg-gradient-to-r from-[#42A5F5] to-[#90CAF9] bg-clip-text text-transparent">Dimulai di</span>{' '}
+              <span className="bg-gradient-to-r from-[#F97316] to-[#FDBA74] bg-clip-text text-transparent">
                 SEAPEDIA
               </span>
             </h2>
@@ -302,13 +303,11 @@ export default function LandingPage() {
               Temukan ribuan produk berkualitas dengan proses belanja yang cepat, aman, dan nyaman. Semua kebutuhanmu tersedia dalam satu platform.
             </p>
             <div className="flex gap-[16px]">
+              <button onClick={() => document.getElementById('hero-content')?.scrollIntoView({ behavior: 'smooth' })} className="w-[180px] h-[56px] bg-[#1C61B7] text-white text-[18px] font-semibold rounded-2xl shadow-[0_12px_30px_rgba(28,97,183,0.25)] hover:brightness-110 active:scale-[0.97] transition-all cursor-pointer">
+                Mulai Belanja
+              </button>
               <Link to="/products">
-                <button className="w-[180px] h-[56px] bg-[#1C61B7] text-white text-[18px] font-semibold rounded-2xl shadow-[0_12px_30px_rgba(28,97,183,0.25)] hover:brightness-110 active:scale-[0.97] transition-all">
-                  Mulai Belanja
-                </button>
-              </Link>
-              <Link to="/products">
-                <button className="w-[180px] h-[56px] bg-white border-2 border-[#1C61B7] text-[#1C61B7] text-[18px] font-semibold rounded-2xl hover:bg-[#F0F6FF] active:scale-[0.97] transition-all">
+                <button className="w-[180px] h-[56px] bg-white border-2 border-[#1C61B7] text-[#1C61B7] text-[18px] font-semibold rounded-2xl hover:bg-[#F0F6FF] active:scale-[0.97] transition-all cursor-pointer">
                   Jelajahi Katalog
                 </button>
               </Link>
@@ -316,6 +315,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <div id="hero-content" />
 
       {/* Deals of the Day — Desktop */}
       {deals && deals.length > 0 && (
