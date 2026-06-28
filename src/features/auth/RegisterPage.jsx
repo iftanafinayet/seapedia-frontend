@@ -66,7 +66,7 @@ export default function RegisterPage() {
         const role = nonAdminRoles[0];
         const { data: roleRes } = await api.post('/auth/active-role', { activeRole: role });
         useAuthStore.getState().setActiveRole({ activeRole: role, token: roleRes.data.token });
-        navigate(`/${role.toLowerCase()}/dashboard`);
+        navigate(role === 'Buyer' ? '/' : `/${role.toLowerCase()}/dashboard`);
       }
     } catch (err) {
       addNotification(err.response?.data?.message || 'Registrasi gagal', 'error');

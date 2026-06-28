@@ -24,7 +24,6 @@ import ReviewSection from './features/guest/ReviewSection'
 import StorePage from './features/guest/StorePage'
 
 // Buyer
-import BuyerDashboard from './features/buyer/BuyerDashboard'
 import WalletPage from './features/buyer/WalletPage'
 import AddressPage from './features/buyer/AddressPage'
 import CartPage from './features/buyer/CartPage'
@@ -101,8 +100,8 @@ export default function App() {
         {/* Dashboard Routes (Buyer) */}
         <Route element={<DashboardLayout />}>
           {/* Buyer */}
-          <Route path="/buyer/dashboard" element={
-            <ProtectedRoute role="Buyer"><BuyerDashboard /></ProtectedRoute>
+          <Route path="/" element={
+            <ProtectedRoute role="Buyer"><LandingPage /></ProtectedRoute>
           } />
           <Route path="/buyer/wallet" element={
             <ProtectedRoute role="Buyer"><WalletPage /></ProtectedRoute>

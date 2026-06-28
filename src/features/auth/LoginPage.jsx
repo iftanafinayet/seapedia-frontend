@@ -37,7 +37,7 @@ export default function LoginPage() {
         const role = nonAdminRoles.length === 1 ? nonAdminRoles[0] : 'Admin';
         const { data: roleRes } = await api.post('/auth/active-role', { activeRole: role });
         useAuthStore.getState().setActiveRole({ activeRole: role, token: roleRes.data.token });
-        navigate(`/${role.toLowerCase()}/dashboard`);
+        navigate(role === 'Buyer' ? '/' : `/${role.toLowerCase()}/dashboard`);
       }
     } catch (err) {
       addNotification(err.response?.data?.message || 'Login gagal', 'error');

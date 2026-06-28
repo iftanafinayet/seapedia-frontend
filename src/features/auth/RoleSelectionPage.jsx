@@ -25,7 +25,7 @@ export default function RoleSelectionPage() {
       setLoadingRole(role);
       const { data } = await api.post('/auth/active-role', { activeRole: role });
       setActiveRole({ activeRole: role, token: data.data.token });
-      navigate(`/${role.toLowerCase()}/dashboard`);
+      navigate(role === 'Buyer' ? '/' : `/${role.toLowerCase()}/dashboard`);
     } catch (err) {
       addNotification(err.response?.data?.message || 'Gagal memilih role', 'error');
     } finally {
