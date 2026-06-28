@@ -285,8 +285,8 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative">
         <img src="/seapediaherobanner.webp" alt="" className="w-full h-auto block" />
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
-          <div className="w-full max-w-[1280px] mx-auto px-[80px] lg:px-[120px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <div className="absolute inset-0 z-10 flex items-center">
+          <div className="w-full max-w-[1280px] ml-0 px-[80px] lg:px-[120px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             <div>
               <span className="inline-block px-4 py-1.5 bg-[#1C61B7] text-white text-[13px] font-semibold rounded-full mb-6 w-fit uppercase tracking-[0.06em]">
                 Premium Marketplace
