@@ -14,6 +14,7 @@ import SplashScreen from './components/shared/SplashScreen'
 import LoginPage from './features/auth/LoginPage'
 import RegisterPage from './features/auth/RegisterPage'
 import RoleSelectionPage from './features/auth/RoleSelectionPage'
+import ProfilePage from './features/auth/ProfilePage'
 
 // Guest
 import LandingPage from './features/guest/LandingPage'
@@ -87,6 +88,9 @@ export default function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/choose-role" element={
             <ProtectedRoute><RoleSelectionPage /></ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute><ProfilePage /></ProtectedRoute>
           } />
           {/* Orders & Cart - accessible to all, shows login bridge for guests */}
           <Route path="/buyer/orders" element={<BuyerOrderListPage />} />
