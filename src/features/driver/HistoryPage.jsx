@@ -1,71 +1,71 @@
 import { useQuery } from '@tanstack/react-query';
-import { Truck, TrendingUp } from 'lucide-react';
-import Card from '../../components/ui/Card';
+import { Truck, TrendingUp, CheckCircle, Package } from 'lucide-react';
 import Skeleton from '../../components/ui/Skeleton';
 import { getDriverMyJobs, getDriverEarnings } from '../../api/driver';
 import { formatCurrency, formatDate } from '../../lib/utils';
 
 export default function HistoryPage() {
-  const { data: history, isLoading: loadingHistory, isError: historyError } = useQuery({
-    queryKey: ['driver', 'my-jobs'],
-    queryFn: getDriverMyJobs,
-    select: (res) => res.data.data || [],
+  const { data: history, isLoading } = useQuery({
+    queryKey: ['driver', 'my-jobs'], queryFn: getDriverMyJobs, select: (res) => res.data.data || [],
+  });
+  const { data: earnings } = useQuery({
+    queryKey: ['driver', 'earnings'], queryFn: getDriverEarnings, select: (res) => res.data.data || [],
   });
 
   const safeHistory = history || [];
-
-  const { data: earnings, isLoading: loadingEarnings } = useQuery({
-    queryKey: ['driver', 'earnings'],
-    queryFn: getDriverEarnings,
-    select: (res) => res.data.data || [],
-  });
-
-  const completedJobs = safeHistory.filter(j => j.status === 'delivered' || j.status === 'completed' || j.status === 'PesananSelesai' || j.status === 'Pesanan_Selesai');
+  const completedJobs = safeHistory.filter(j =>
+    j.status === 'Delivered' || j.status === 'Completed' || j.status === 'PesananSelesai' || j.status === 'Pesanan_Selesai'
+  );
 
   return (
     <div className="space-y-4">
-      <h1 className="text-[24px] font-semibold text-on-surface">Riwayat Pengiriman</h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-[20px] font-bold text-on-surface">Riwayat Pengiriman</h1>
+          <p className="text-[12px] text-on-surface-variant mt-0.5">{completedJobs.length} pengiriman selesai</p>
+        </div>
+      </div>
 
-      {loadingEarnings ? (
-        <Skeleton className="h-24 rounded-[12px]" />
+      <div className="bg-primary text-on-primary rounded-2xl p-4">
+        <div className="flex items-center gap-2 mb-1">
+          <TrendingUp className="w-4 h-4 opacity-80" />
+          <p className="text-[11px] font-semibold uppercase tracking-[0.05em] opacity-80">Total Penghasilan</p>
+        </div>
+        <p className="text-[28px] font-bold">{formatCurrency(earnings?.totalEarnings || 0)}</p>
+        <p className="text-[12px] opacity-80 mt-0.5">{completedJobs.length} pengiriman selesai</p>
+      </div>
+
+      {isLoading ? (
+        <div className="space-y-2">{[1,2,3].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)}</div>
+      ) : safeHistory.length === 0 ? (
+        <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 text-center">
+          <Truck className="w-8 h-8 text-outline/20 mx-auto mb-2" />
+          <p className="text-[13px] text-on-surface-variant">Belum ada riwayat pengiriman</p>
+        </div>
       ) : (
-        <Card className="bg-primary text-on-primary !rounded-[12px]">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-on-primary" />
-            </div>
-            <p className="text-[14px] font-medium text-on-primary/80">Total Penghasilan</p>
+        <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden">
+          <div className="divide-y divide-outline-variant/10">
+            {safeHistory.map((job) => {
+              const isCompleted = job.status === 'Delivered' || job.status === 'Completed' || job.status === 'PesananSelesai' || job.status === 'Pesanan_Selesai';
+              return (
+                <div key={job.id} className="flex items-center gap-3 px-4 py-3.5 hover:bg-surface-container/50 transition-colors">
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${isCompleted ? 'bg-emerald-50' : 'bg-surface-container'}`}>
+                    {isCompleted ? <CheckCircle className="w-4 h-4 text-emerald-600" /> : <Package className="w-4 h-4 text-outline" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-on-surface">Order #{job.orderId || job.id}</p>
+                    <div className="flex items-center gap-2 text-[11px] text-on-surface-variant">
+                      <span>{formatDate(job.completedAt || job.createdAt)}</span>
+                      {!isCompleted && <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-50 text-amber-700">Proses</span>}
+                    </div>
+                  </div>
+                  <p className="text-[14px] font-bold text-on-surface shrink-0">{formatCurrency(job.order?.deliveryFee || job.amount || job.earning || 0)}</p>
+                </div>
+              );
+            })}
           </div>
-          <p className="text-[28px] font-bold text-on-primary">{formatCurrency(earnings?.totalEarnings || 0)}</p>
-          <p className="text-[12px] text-on-primary/70 mt-1">{completedJobs.length} pengiriman selesai</p>
-        </Card>
+        </div>
       )}
-
-      {loadingHistory ? (
-        <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
-      ) : historyError || safeHistory.length === 0 ? (
-            <div className="text-center py-12">
-              <Truck className="w-12 h-12 text-outline mx-auto mb-3" />
-              <p className="text-[14px] text-outline">Belum ada riwayat pengiriman</p>
-            </div>
-          ) : (
-        <div className="space-y-2">
-          {safeHistory.map((job) => (
-            <Card key={job.id} className="flex justify-between items-center !rounded-[12px]">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center">
-                  <Truck className="w-4 h-4 text-on-surface-variant" />
-                </div>
-                <div>
-                  <p className="text-[14px] font-semibold text-on-surface">Order #{job.orderId || job.id}</p>
-                  <p className="text-[12px] text-outline">{formatDate(job.completedAt || job.createdAt)}</p>
-                </div>
-              </div>
-              <p className="text-[15px] font-bold text-primary">{formatCurrency(job.amount || job.earning || 0)}</p>
-            </Card>
-          ))}
-            </div>
-          )}
     </div>
   );
 }
