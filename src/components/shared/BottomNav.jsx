@@ -5,14 +5,14 @@ import { cn } from '../../lib/utils';
 
 const guestTabs = [
   { to: '/', icon: Home, label: 'Home', exact: true },
-  { to: '/products', icon: Grid3X3, label: 'Category' },
+  { to: '/products', icon: Grid3X3, label: 'Catalog' },
   { to: '/reviews', icon: ClipboardList, label: 'Reviews' },
   { to: '/login', icon: User, label: 'Profile' },
 ];
 
 const buyerTabs = [
   { to: '/buyer/dashboard', icon: Home, label: 'Home', exact: true },
-  { to: '/products', icon: Grid3X3, label: 'Katalog' },
+  { to: '/products', icon: Grid3X3, label: 'Catalog' },
   { to: '/buyer/orders', icon: Package, label: 'Orders' },
   { to: '/profile', icon: User, label: 'Profile' },
 ];

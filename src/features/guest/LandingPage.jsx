@@ -68,7 +68,7 @@ function ProductCard({ product, className = '' }) {
         <img
           src={cardImages[hoverImg] || cardImages[0]}
           alt={product.name}
-          className="w-full h-full object-cover rounded-xl"
+          className="w-full h-full object-cover rounded-lg"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80';

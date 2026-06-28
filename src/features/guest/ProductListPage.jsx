@@ -23,7 +23,7 @@ const getProductCategory = (product) => {
   if (name.includes('sepatu') || name.includes('sneaker') || name.includes('casual') || name.includes('shoes')) return 'FOOTWEAR';
   if (name.includes('tas') || name.includes('ransel') || name.includes('backpack') || name.includes('bag')) return 'BAG';
   if (name.includes('flat bottom') || name.includes('lightpack') || name.includes('coffee') || name.includes('packaging')) return 'FLAT BOTTOM';
-  
+
   if (product.store?.name?.toLowerCase().includes('elektronik')) return 'ELECTRONICS';
   if (product.store?.name?.toLowerCase().includes('fashion')) return 'FASHION';
   return 'GENERAL';
@@ -60,7 +60,7 @@ function ProductImage({ p }) {
   const images = (() => {
     const imgs = [];
     if (p.imageUrl) imgs.push(p.imageUrl);
-    if (p.images) try { imgs.push(...JSON.parse(p.images)); } catch {}
+    if (p.images) try { imgs.push(...JSON.parse(p.images)); } catch { }
     if (imgs.length === 0) imgs.push(getProductImage(p));
     return imgs;
   })();
@@ -69,7 +69,7 @@ function ProductImage({ p }) {
     <img
       src={images[hoverIndex] || images[0]}
       alt={p.name}
-      className="w-full h-full object-cover rounded-xl"
+      className="w-full h-full object-cover rounded-lg"
       onMouseEnter={() => {
         if (images.length > 1) {
           setHoverIndex(1);
@@ -130,8 +130,8 @@ export default function ProductListPage() {
             {debouncedSearch
               ? `${safeProducts.length} produk ditemukan`
               : categoryParam
-              ? `Jelajahi produk kategori ${categoryParam}`
-              : 'Temukan berbagai produk terbaik untuk kebutuhanmu'
+                ? `Jelajahi produk kategori ${categoryParam}`
+                : 'Temukan berbagai produk terbaik untuk kebutuhanmu'
             }
           </p>
         </div>
@@ -173,7 +173,7 @@ export default function ProductListPage() {
       {!debouncedSearch && (
         <p className="text-[13px] text-on-surface-variant mb-4">
           {total > 20
-            ? `Menampilkan ${(page-1)*20+1}-${Math.min(page*20, total)} dari ${total} produk`
+            ? `Menampilkan ${(page - 1) * 20 + 1}-${Math.min(page * 20, total)} dari ${total} produk`
             : `${total} produk tersedia`
           }
         </p>
@@ -182,7 +182,7 @@ export default function ProductListPage() {
       {/* Product Grid */}
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6">
-          {[1,2,3,4,5,6,7,8].map(i => (
+          {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
             <div key={i} className="bg-white border border-slate-100 rounded-xl shadow-[0_4px_12px_rgb(0,0,0,0.03)] p-2.5 lg:p-4 flex flex-col">
               <Skeleton className="w-full aspect-square rounded-xl mb-3 bg-slate-100" />
               <Skeleton className="h-4 w-3/4 rounded mt-1 bg-slate-100" />
@@ -218,37 +218,21 @@ export default function ProductListPage() {
             <Link
               key={p.id}
               to={`/products/${p.id}`}
-              className="bg-white border border-slate-100 rounded-xl shadow-[0_4px_12px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 p-2.5 lg:p-4 transition-all duration-300 group flex flex-col h-full"
+              className="bg-white border border-slate-100 rounded shadow-[0_4px_12px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 p-2.5 lg:p-4 transition-all duration-300 group flex flex-col h-full"
             >
               {/* Image with hover carousel */}
-              <div className="aspect-square bg-slate-50/50 rounded-xl flex items-center justify-center p-2 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-300">
+              <div className="aspect-square bg-slate-50/50 flex items-center justify-center p-2 relative overflow-hidden transition-transform duration-300">
                 <ProductImage p={p} />
 
-                {/* Favorite */}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setFavorites(f => ({ ...f, [p.id]: !f[p.id] }));
-                  }}
-                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors active:scale-90"
-                >
-                  <Heart
-                    className={cn(
-                      'w-4 h-4 transition-colors',
-                      favorites[p.id] ? 'text-error fill-error' : 'text-slate-400'
-                    )}
-                  />
-                </button>
-
                 {p.stock != null && p.stock <= 3 && p.stock > 0 && (
-                  <span className="absolute top-3 left-3 px-2 py-0.5 rounded-md text-[10px] font-bold bg-error text-white tracking-wide uppercase">
+                  <span className="absolute top-3 left-3 px-2 py-0.5 text-[10px] font-bold bg-error text-white tracking-wide uppercase">
                     {p.stock} left
                   </span>
                 )}
               </div>
 
               {/* Info */}
-              <div className="flex-1 flex flex-col pt-2.5">
+              <div className="flex-1 flex flex-col pt-2.5 min-h-[72px]">
                 <h3 className="text-[13px] font-medium text-slate-800 line-clamp-2 leading-snug group-hover:text-primary-container transition-colors duration-200">
                   {p.name}
                 </h3>
@@ -260,14 +244,9 @@ export default function ProductListPage() {
                     {p.stock != null ? p.stock : 0} stok
                   </span>
                 </div>
-                {p.store && (
-                  <span
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/stores/${p.store.id}`); }}
-                    className="text-[11px] text-slate-400 hover:text-primary mt-1 truncate cursor-pointer"
-                  >
-                    {p.store.name}
-                  </span>
-                )}
+                <span className="text-[11px] text-slate-400 hover:text-primary mt-1 truncate h-4">
+                  {p.store?.name || ''}
+                </span>
               </div>
             </Link>
           ))}
@@ -291,7 +270,7 @@ export default function ProductListPage() {
         </div>
       )}
 
-      <footer className="mt-16 pt-8 pb-6 border-t border-outline-variant/20 text-center">
+      <footer className="mt-8 pt-4 border-t border-outline-variant/20 text-center">
         <p className="text-[13px] font-bold text-on-surface">SEAPEDIA</p>
         <p className="text-[11px] text-outline mt-1">&copy; 2024 SEAPEDIA. All rights reserved.</p>
       </footer>

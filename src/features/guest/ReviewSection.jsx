@@ -84,7 +84,7 @@ export default function ReviewSection() {
   };
 
   return (
-    <div className="max-w-content mx-auto px-4 lg:px-6">
+    <div className="max-w-content mx-auto px-4 lg:px-6 pt-4">
       <div className="mb-8">
         <h1 className="text-[24px] lg:text-[32px] font-semibold text-on-surface">Ulasan</h1>
         <p className="text-[14px] lg:text-[16px] text-on-surface-variant mt-1">Lihat dan bagikan pengalaman kamu</p>
@@ -176,6 +176,44 @@ export default function ReviewSection() {
           ))}
         </div>
       )}
+
+      {isLoading ? (
+        <div className="space-y-3">
+          {[1, 2, 3].map(i => <Skeleton key={i} className="h-28 rounded-xl" />)}
+        </div>
+      ) : isError || safeReviews.length === 0 ? (
+        <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-12 text-center">
+          <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mx-auto mb-4">
+            <Star className="w-8 h-8 text-outline/40" />
+          </div>
+          <p className="text-[16px] font-semibold text-on-surface-variant">Belum ada ulasan</p>
+          <p className="text-[14px] text-on-surface-variant mt-1">Jadilah yang pertama memberikan ulasan</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {safeReviews.map((r) => (
+            <div key={r.id} className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-5 shadow-card hover:shadow-card-hover transition-all duration-200">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-11 h-11 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-[15px] shrink-0">
+                  {r.reviewerName?.charAt(0)?.toUpperCase() || <User className="w-5 h-5" />}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] font-semibold text-on-surface">{r.reviewerName}</p>
+                  <StarDisplay rating={r.rating} />
+                </div>
+                <span className="text-[12px] text-on-surface-variant shrink-0">{formatDateShort(r.createdAt)}</span>
+              </div>
+              <div
+                className="text-[14px] lg:text-[15px] text-on-surface-variant leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(r.comment) }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      <p className="text-center text-sm text-gray-500 mt-6">Semua hak cipta dilindungi &copy; 2026 Seapedia</p>
     </div>
+
   );
 }
