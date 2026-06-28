@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Users, Store, Package, Clock, AlertTriangle, Calendar, TrendingUp, Shield, Ticket } from 'lucide-react';
+import { Users, Store, Package, Clock, AlertTriangle, Calendar, TrendingUp, Shield, Ticket, ShoppingCart, Truck, User } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
@@ -39,11 +39,13 @@ export default function AdminDashboard() {
   });
 
   const stats = [
-    { label: 'Total Users', value: dashboard?.userCount || 0, icon: Users, color: 'bg-primary-fixed text-primary' },
-    { label: 'Active Stores', value: dashboard?.storeCount || 0, icon: Store, color: 'bg-emerald-50 text-emerald-600' },
-    { label: 'Total Orders', value: dashboard?.orderCount || 0, icon: Package, color: 'bg-amber-50 text-amber-600' },
-    { label: 'On Delivery', value: dashboard?.totalOnDelivery || 0, icon: Clock, color: 'bg-blue-50 text-blue-600' },
+    { label: 'Total User', value: dashboard?.userCount || 0, icon: Users, color: 'bg-primary-fixed text-primary' },
+    { label: 'Toko Aktif', value: dashboard?.storeCount || 0, icon: Store, color: 'bg-emerald-50 text-emerald-600' },
+    { label: 'Total Pesanan', value: dashboard?.orderCount || 0, icon: Package, color: 'bg-amber-50 text-amber-600' },
+    { label: 'Sedang Dikirim', value: dashboard?.totalOnDelivery || 0, icon: Clock, color: 'bg-blue-50 text-blue-600' },
   ];
+
+  const roleCounts = dashboard?.roleCounts || {};
 
   return (
     <div className="space-y-5">
@@ -67,7 +69,7 @@ export default function AdminDashboard() {
           ) : (
             <Calendar className="w-4 h-4" />
           )}
-          {simulateMutation.isPending ? 'Simulating...' : 'Simulate Next Day'}
+          {simulateMutation.isPending ? 'Memproses...' : 'Simulasi Hari Berikutnya'}
         </Button>
       </div>
 
@@ -76,6 +78,7 @@ export default function AdminDashboard() {
           {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-28 rounded-xl" />)}
         </div>
       ) : (
+        <>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {stats.map((c) => (
             <Card key={c.label} className="!p-4">
@@ -90,6 +93,47 @@ export default function AdminDashboard() {
             </Card>
           ))}
         </div>
+
+        {/* User Breakdown by Role */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <Card className="!p-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <ShoppingCart className="w-5 h-5 text-primary" />
+              </div>
+              <p className="text-[12px] text-on-surface-variant font-medium">Pembeli</p>
+            </div>
+            <p className="text-[24px] font-bold text-on-surface">{roleCounts.buyer || 0}</p>
+          </Card>
+          <Card className="!p-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+                <Store className="w-5 h-5 text-emerald-600" />
+              </div>
+              <p className="text-[12px] text-on-surface-variant font-medium">Penjual</p>
+            </div>
+            <p className="text-[24px] font-bold text-on-surface">{roleCounts.seller || 0}</p>
+          </Card>
+          <Card className="!p-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                <Truck className="w-5 h-5 text-amber-600" />
+              </div>
+              <p className="text-[12px] text-on-surface-variant font-medium">Kurir</p>
+            </div>
+            <p className="text-[24px] font-bold text-on-surface">{roleCounts.driver || 0}</p>
+          </Card>
+          <Card className="!p-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-error/10 flex items-center justify-center">
+                <Shield className="w-5 h-5 text-error" />
+              </div>
+              <p className="text-[12px] text-on-surface-variant font-medium">Admin</p>
+            </div>
+            <p className="text-[24px] font-bold text-on-surface">{roleCounts.admin || 0}</p>
+          </Card>
+        </div>
+        </>
       )}
 
       <Card className="!p-5 border-error/20 bg-error-container/20">
@@ -151,7 +195,7 @@ export default function AdminDashboard() {
           <Link to="/admin/vouchers">
             <Card hover className="!p-4 text-center">
               <Ticket className="w-6 h-6 text-primary mx-auto mb-2" />
-              <p className="text-[14px] font-semibold text-on-surface">Manage Vouchers</p>
+              <p className="text-[14px] font-semibold text-on-surface">Kelola Voucher</p>
               <p className="text-[12px] text-outline mt-1">Buat & kelola voucher</p>
             </Card>
           </Link>
