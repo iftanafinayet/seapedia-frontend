@@ -201,7 +201,7 @@ export default function LandingPage() {
           </p>
           <div className="flex gap-3">
             <Link to="/products">
-              <button className="w-[140px] h-[44px] bg-white/90 backdrop-blur-sm border-2 border-[#1C61B7] text-[#1C61B7] text-[14px] font-semibold rounded-xl hover:bg-white active:scale-[0.97] transition-all cursor-pointer">
+              <button className="w-[140px] h-[44px] bg-white/15 backdrop-blur-md border border-white/30 text-white text-[14px] font-semibold rounded-xl hover:bg-white/25 active:scale-[0.97] transition-all cursor-pointer">
                 Jelajahi Katalog
               </button>
             </Link>
@@ -311,7 +311,7 @@ export default function LandingPage() {
                 Mulai Belanja
               </button>
               <Link to="/products">
-                <button className="w-[180px] h-[56px] bg-white border-2 border-[#1C61B7] text-[#1C61B7] text-[18px] font-semibold rounded-2xl hover:bg-[#F0F6FF] active:scale-[0.97] transition-all cursor-pointer">
+                <button className="w-[180px] h-[56px] bg-white/15 backdrop-blur-md border border-white/30 text-white text-[18px] font-semibold rounded-2xl hover:bg-white/25 active:scale-[0.97] transition-all cursor-pointer">
                   Jelajahi Katalog
                 </button>
               </Link>
