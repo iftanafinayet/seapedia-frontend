@@ -284,31 +284,37 @@ export default function LandingPage() {
     <div className="hidden lg:block">
       {/* Hero Section */}
       <section className="relative">
-        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="w-full h-auto block" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-0 z-20 flex flex-col justify-center px-8 max-w-content mx-auto pointer-events-none">
-          <div className="pointer-events-auto">
-          <span className="inline-block px-3 py-1 bg-primary/80 text-white text-[12px] font-medium rounded-full mb-6 w-fit uppercase tracking-[0.05em] backdrop-blur-sm">
-            Premium Marketplace
-          </span>
-          <h2 className="text-[48px] font-bold leading-[56px] tracking-[-0.02em] text-white mb-6 max-w-2xl">
-            {hero.heroTitle || 'Belanja Mudah di SEAPEDIA'}
-          </h2>
-          <p className="text-[18px] leading-[28px] text-white/70 mb-10 max-w-lg">
-            {hero.heroSubtitle || 'Temukan perlengkapan maritim terbaik dari seluruh dunia dalam satu platform. Kualitas terjamin untuk petualangan laut Anda.'}
-          </p>
-          <div className="flex gap-4">
-            <Link to={hero.heroCtaLink || '/products'}>
-              <Button size="lg" className="px-8 py-4 text-[14px] font-semibold">{hero.heroCtaText || 'Mulai Belanja'}</Button>
-            </Link>
-            <Link to="/products">
-              <button className="border border-white/50 text-white px-8 py-4 rounded-[8px] text-[14px] font-semibold hover:bg-white/10 transition-all active:scale-[0.98] backdrop-blur-sm">
-                Lihat Katalog
-              </button>
-            </Link>
+        <img src="/seapediaherobanner.webp" alt="" className="w-full h-auto block" />
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
+          <div className="w-full max-w-[1280px] mx-auto px-[80px] lg:px-[120px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <div>
+              <span className="inline-block px-4 py-1.5 bg-[#1C61B7] text-white text-[13px] font-semibold rounded-full mb-6 w-fit uppercase tracking-[0.06em]">
+                Premium Marketplace
+              </span>
+            </div>
+            <h2 className="text-[64px] font-extrabold leading-[110%] tracking-[-2px] text-[#111827] max-w-[600px] mb-[28px]">
+              Belanja Cerdas Dimulai di{' '}
+              <span className="bg-gradient-to-r from-[#1C61B7] to-[#6CBDEE] bg-clip-text text-transparent">
+                SEAPEDIA
+              </span>
+            </h2>
+            <p className="text-[20px] font-normal leading-[170%] text-[#6B7280] max-w-[520px] mb-[40px]">
+              Temukan ribuan produk berkualitas dengan proses belanja yang cepat, aman, dan nyaman. Semua kebutuhanmu tersedia dalam satu platform.
+            </p>
+            <div className="flex gap-[16px]">
+              <Link to="/products">
+                <button className="w-[180px] h-[56px] bg-[#1C61B7] text-white text-[18px] font-semibold rounded-2xl shadow-[0_12px_30px_rgba(28,97,183,0.25)] hover:brightness-110 active:scale-[0.97] transition-all">
+                  Mulai Belanja
+                </button>
+              </Link>
+              <Link to="/products">
+                <button className="w-[180px] h-[56px] bg-white border-2 border-[#1C61B7] text-[#1C61B7] text-[18px] font-semibold rounded-2xl hover:bg-[#F0F6FF] active:scale-[0.97] transition-all">
+                  Jelajahi Katalog
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
       </section>
 
       {/* Deals of the Day — Desktop */}
