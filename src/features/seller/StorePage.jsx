@@ -16,6 +16,13 @@ import { formatCurrency } from '../../lib/utils';
 import useUiStore from '../../stores/uiStore';
 import useAuthStore from '../../stores/authStore';
 
+function getOrderRevenue(order) {
+  if (order.items && order.items.length > 0) {
+    return order.items.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
+  }
+  return (order.totalAmount || 0) - (order.discountAmount || 0);
+}
+
 const storeSchema = z.object({
   name: z.string().min(3, 'Nama toko minimal 3 karakter'),
   description: z.string().max(200, 'Maksimal 200 karakter').optional().or(z.literal('')),
@@ -59,7 +66,7 @@ export default function StorePage() {
   const safeProducts = products || [];
   const safeOrders = orders || [];
   const completedOrders = safeOrders.filter(o => o.status === 'PesananSelesai' || o.status === 'Pesanan_Selesai');
-  const totalIncome = completedOrders.reduce((sum, o) => sum + (o.finalTotal || o.totalAmount || 0), 0);
+  const totalIncome = completedOrders.reduce((sum, o) => sum + getOrderRevenue(o), 0);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(storeSchema),
