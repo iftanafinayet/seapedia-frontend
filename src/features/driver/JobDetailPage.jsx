@@ -35,7 +35,7 @@ export default function JobDetailPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['driver'] });
       addNotification('Pengiriman selesai!', 'success');
-      navigate('/driver/history');
+      navigate('/driver/dashboard');
     },
     onError: (err) => addNotification(err.response?.data?.message || 'Gagal', 'error'),
   });

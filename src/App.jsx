@@ -145,8 +145,14 @@ export default function App() {
           <Route path="/driver/dashboard" element={
             <ProtectedRoute role="Driver"><DriverDashboard /></ProtectedRoute>
           } />
+          <Route path="/driver/jobs" element={
+            <ProtectedRoute role="Driver"><JobBoardPage /></ProtectedRoute>
+          } />
           <Route path="/driver/jobs/:id" element={
             <ProtectedRoute role="Driver"><JobDetailPage /></ProtectedRoute>
+          } />
+          <Route path="/driver/history" element={
+            <ProtectedRoute role="Driver"><HistoryPage /></ProtectedRoute>
           } />
         </Route>
 

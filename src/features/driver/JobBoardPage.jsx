@@ -256,7 +256,7 @@ export default function JobBoardPage() {
           </div>
 
           {/* Quick Link */}
-          <Link to="/driver/history" className="block bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-4 hover:border-primary transition-all group">
+          <Link to="/driver/dashboard" className="block bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-4 hover:border-primary transition-all group">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center">
