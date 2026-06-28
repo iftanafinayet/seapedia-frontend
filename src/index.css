@@ -14,10 +14,28 @@
     font-size: 14px;
     line-height: 1.5;
     color: #151b26;
-    background: linear-gradient(180deg, #dce8fa 0%, #f5f9ff 100%);
+    background: linear-gradient(180deg, #f8fbff 0%, #eaf5ff 100%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% -20%, rgba(163, 201, 255, 0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 30%, rgba(108, 189, 238, 0.15) 0%, transparent 60%);
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
+    min-height: 100dvh;
   }
 
   #root {

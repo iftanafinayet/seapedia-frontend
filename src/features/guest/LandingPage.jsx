@@ -291,21 +291,19 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative">
         <img src="/seapediaherobanner.webp" alt="" className="w-full h-auto block" />
-        <div className="absolute inset-0 z-10 flex items-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#f8fbff] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 z-20 flex items-center">
           <div className="w-full max-w-[1280px] ml-0 px-[80px] lg:px-[120px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             <div>
               <span className="inline-block px-4 py-1.5 bg-[#1C61B7] text-white text-[13px] font-semibold rounded-full mb-6 w-fit uppercase tracking-[0.06em]">
                 Premium Marketplace
               </span>
             </div>
-            <h2 className="text-[64px] font-extrabold leading-[110%] tracking-[-2px] max-w-[600px] mb-[28px]">
-              <span className="text-[#1A237E]">Belanja Cerdas</span>{' '}
-              <span className="text-[#1A237E]">Dimulai di</span>{' '}
-              <span className="bg-gradient-to-r from-[#F97316] to-[#FDBA74] bg-clip-text text-transparent">
-                SEAPEDIA
-              </span>
+            <h2 className="text-[64px] font-extrabold leading-[110%] tracking-[-2px] max-w-[600px] mb-[28px] text-white">
+              Belanja Cerdas Dimulai di SEAPEDIA
             </h2>
-            <p className="text-[20px] font-normal leading-[170%] text-[#6B7280] max-w-[520px] mb-[40px]">
+            <p className="text-[20px] font-normal leading-[170%] text-white/70 max-w-[520px] mb-[40px]">
               Temukan ribuan produk berkualitas dengan proses belanja yang cepat, aman, dan nyaman. Semua kebutuhanmu tersedia dalam satu platform.
             </p>
             <div className="flex gap-[16px]">
