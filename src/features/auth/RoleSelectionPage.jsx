@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, Store, Truck, Shield, ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { ShoppingCart, Store, Truck, Shield, ArrowRight, Loader2 } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import useAuthStore from '../../stores/authStore';
+import useUiStore from '../../stores/uiStore';
+import api from '../../api/client';
 
 const roleConfig = {
   Buyer: { icon: ShoppingCart, label: 'Pembeli', desc: 'Belanja produk, kelola keranjang & pesanan', color: 'bg-primary-fixed text-primary' },
@@ -14,10 +17,20 @@ const roleConfig = {
 export default function RoleSelectionPage() {
   const { roles, setActiveRole, logout } = useAuthStore();
   const navigate = useNavigate();
+  const addNotification = useUiStore((s) => s.addNotification);
+  const [loadingRole, setLoadingRole] = useState(null);
 
-  const handleSelect = (role) => {
-    setActiveRole(role);
-    navigate(`/${role.toLowerCase()}/dashboard`);
+  const handleSelect = async (role) => {
+    try {
+      setLoadingRole(role);
+      const { data } = await api.post('/auth/active-role', { activeRole: role });
+      setActiveRole({ activeRole: role, token: data.data.token });
+      navigate(`/${role.toLowerCase()}/dashboard`);
+    } catch (err) {
+      addNotification(err.response?.data?.message || 'Gagal memilih role', 'error');
+    } finally {
+      setLoadingRole(null);
+    }
   };
 
   const handleLogout = () => {
@@ -36,14 +49,16 @@ export default function RoleSelectionPage() {
         {roles.filter(r => r !== 'Admin').map((role) => {
           const config = roleConfig[role];
           const Icon = config.icon;
+          const isLoading = loadingRole === role;
           return (
             <button
               key={role}
               onClick={() => handleSelect(role)}
-              className="w-full group relative overflow-hidden bg-white rounded-[12px] border border-outline-variant p-5 flex items-center gap-4 text-left hover:border-primary hover:shadow-card-hover transition-all duration-200"
+              disabled={isLoading}
+              className="w-full group relative overflow-hidden bg-white rounded-[12px] border border-outline-variant p-5 flex items-center gap-4 text-left hover:border-primary hover:shadow-card-hover transition-all duration-200 disabled:opacity-60"
             >
               <div className={`w-13 h-13 rounded-2xl flex items-center justify-center shrink-0 ${config.color} group-hover:scale-110 transition-transform`}>
-                <Icon className="w-6 h-6" />
+                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Icon className="w-6 h-6" />}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[16px] font-semibold text-on-surface">{config.label}</p>
@@ -57,10 +72,11 @@ export default function RoleSelectionPage() {
         {roles.includes('Admin') && (
           <button
             onClick={() => handleSelect('Admin')}
-            className="w-full group relative overflow-hidden bg-white rounded-[12px] border border-outline-variant p-5 flex items-center gap-4 text-left hover:border-error hover:shadow-card-hover transition-all duration-200"
+            disabled={loadingRole === 'Admin'}
+            className="w-full group relative overflow-hidden bg-white rounded-[12px] border border-outline-variant p-5 flex items-center gap-4 text-left hover:border-error hover:shadow-card-hover transition-all duration-200 disabled:opacity-60"
           >
             <div className="w-13 h-13 rounded-2xl flex items-center justify-center shrink-0 bg-error-container text-error group-hover:scale-110 transition-transform">
-              <Shield className="w-6 h-6" />
+              {loadingRole === 'Admin' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Shield className="w-6 h-6" />}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[16px] font-semibold text-on-surface">Admin</p>

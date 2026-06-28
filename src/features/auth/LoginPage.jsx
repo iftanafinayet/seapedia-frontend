@@ -10,6 +10,7 @@ import Card from '../../components/ui/Card';
 import useAuthStore from '../../stores/authStore';
 import useUiStore from '../../stores/uiStore';
 import { loginUser } from '../../api/auth';
+import api from '../../api/client';
 
 const schema = z.object({
   identifier: z.string().min(1, 'Username atau email wajib diisi'),
@@ -27,16 +28,16 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await loginUser(data);
-      useAuthStore.getState().setAuth({ user: res.data.data.user, token: res.data.data.token, roles: res.data.data.user.roles });
-      const nonAdminRoles = res.data.data.user.roles.filter(r => r !== 'Admin');
+      const { user, token } = res.data.data;
+      useAuthStore.getState().setAuth({ user, token, roles: user.roles });
+      const nonAdminRoles = user.roles.filter(r => r !== 'Admin');
       if (nonAdminRoles.length > 1) {
         navigate('/choose-role');
-      } else if (nonAdminRoles.length === 1) {
-        useAuthStore.getState().setActiveRole(nonAdminRoles[0]);
-        navigate(`/${nonAdminRoles[0].toLowerCase()}/dashboard`);
-      } else if (res.data.data.user.roles.includes('Admin')) {
-        useAuthStore.getState().setActiveRole('Admin');
-        navigate('/admin/dashboard');
+      } else {
+        const role = nonAdminRoles.length === 1 ? nonAdminRoles[0] : 'Admin';
+        const { data: roleRes } = await api.post('/auth/active-role', { activeRole: role });
+        useAuthStore.getState().setActiveRole({ activeRole: role, token: roleRes.data.token });
+        navigate(`/${role.toLowerCase()}/dashboard`);
       }
     } catch (err) {
       addNotification(err.response?.data?.message || 'Login gagal', 'error');

@@ -9,6 +9,7 @@ import Card from '../../components/ui/Card';
 import useAuthStore from '../../stores/authStore';
 import useUiStore from '../../stores/uiStore';
 import { registerUser } from '../../api/auth';
+import api from '../../api/client';
 import { UserPlus, Check } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -55,14 +56,17 @@ export default function RegisterPage() {
     try {
       const payload = { ...data, confirmPassword: undefined, agreed: undefined };
       const res = await registerUser(payload);
-      useAuthStore.getState().setAuth({ user: res.data.data.user, token: res.data.data.token, roles: res.data.data.user.roles });
+      const { user, token } = res.data.data;
+      useAuthStore.getState().setAuth({ user, token, roles: user.roles });
       addNotification('Registrasi berhasil!', 'success');
-      const nonAdminRoles = res.data.data.user.roles.filter(r => r !== 'Admin');
+      const nonAdminRoles = user.roles.filter(r => r !== 'Admin');
       if (nonAdminRoles.length > 1) {
         navigate('/choose-role');
       } else if (nonAdminRoles.length === 1) {
-        useAuthStore.getState().setActiveRole(nonAdminRoles[0]);
-        navigate(`/${nonAdminRoles[0].toLowerCase()}/dashboard`);
+        const role = nonAdminRoles[0];
+        const { data: roleRes } = await api.post('/auth/active-role', { activeRole: role });
+        useAuthStore.getState().setActiveRole({ activeRole: role, token: roleRes.data.token });
+        navigate(`/${role.toLowerCase()}/dashboard`);
       }
     } catch (err) {
       addNotification(err.response?.data?.message || 'Registrasi gagal', 'error');

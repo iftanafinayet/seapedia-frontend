@@ -15,9 +15,11 @@ const useAuthStore = create((set) => ({
     set({ user, token, roles, isAuthenticated: true });
   },
 
-  setActiveRole: (role) => {
-    localStorage.setItem('activeRole', role);
-    set({ activeRole: role });
+  setActiveRole: (data) => {
+    const { activeRole, token } = data;
+    localStorage.setItem('activeRole', activeRole);
+    localStorage.setItem('token', token);
+    set({ activeRole, token });
   },
 
   logout: () => {
