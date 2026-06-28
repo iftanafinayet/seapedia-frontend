@@ -92,19 +92,31 @@ export default function ProductListPage() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
   const [favorites, setFavorites] = useState({});
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, activeFilter, categoryParam]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [page]);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['products', debouncedSearch, activeFilter, categoryParam, page],
+    queryFn: () => getProducts({ search: debouncedSearch || undefined, sort: activeFilter || undefined, category: categoryParam || undefined, page, limit: 20 }),
+  });
+
+  const products = data?.data?.data || [];
+  const pagination = data?.data?.pagination || {};
+  const safeProducts = products || [];
+  const totalPages = pagination.totalPages || 1;
+  const total = pagination.total || 0;
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
     return () => clearTimeout(timer);
   }, [search]);
-
-  const { data: products, isLoading, isError } = useQuery({
-    queryKey: ['products', debouncedSearch, activeFilter, categoryParam],
-    queryFn: () => getProducts({ search: debouncedSearch || undefined, sort: activeFilter || undefined, category: categoryParam || undefined }),
-    select: (res) => res.data.data || [],
-  });
-
-  const safeProducts = products || [];
 
   return (
     <div className="max-w-content mx-auto px-4 lg:px-6 pt-4 pb-20 lg:pb-8">
@@ -160,7 +172,10 @@ export default function ProductListPage() {
       {/* Product count */}
       {!debouncedSearch && (
         <p className="text-[13px] text-on-surface-variant mb-4">
-          {safeProducts.length} products available
+          {total > 20
+            ? `Menampilkan ${(page-1)*20+1}-${Math.min(page*20, total)} dari ${total} produk`
+            : `${total} produk tersedia`
+          }
         </p>
       )}
 
@@ -256,6 +271,23 @@ export default function ProductListPage() {
               </div>
             </Link>
           ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-3 mt-8">
+          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
+            className="px-4 py-2 rounded-lg border border-outline-variant text-[13px] font-semibold text-on-surface-variant hover:bg-surface-container-low transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+            Sebelumnya
+          </button>
+          <span className="text-[13px] text-on-surface-variant font-medium">
+            {page} / {totalPages}
+          </span>
+          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
+            className="px-4 py-2 rounded-lg border border-outline-variant text-[13px] font-semibold text-on-surface-variant hover:bg-surface-container-low transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+            Berikutnya
+          </button>
         </div>
       )}
 
