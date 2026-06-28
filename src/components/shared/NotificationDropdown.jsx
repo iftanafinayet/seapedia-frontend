@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Ticket, Truck, CheckCircle, Bell, Percent } from 'lucide-react';
+import { Ticket, Truck, CheckCircle, Bell, Percent, Package, ClipboardList } from 'lucide-react';
 import { getBuyerOrders } from '../../api/buyer';
+import { getSellerOrders } from '../../api/seller';
+import { getAvailableJobs, getDriverMyJobs } from '../../api/driver';
 import { getActiveDiscounts } from '../../api/guest';
-import { formatDateShort } from '../../lib/utils';
+import { formatDateShort, formatCurrency } from '../../lib/utils';
 import useAuthStore from '../../stores/authStore';
 import { cn } from '../../lib/utils';
 
@@ -16,9 +18,9 @@ const setLastSeen = (ts) => { localStorage.setItem('notifLastSeen', String(ts));
 export default function NotificationDropdown() {
   const [open, setOpen] = useState(false);
   const [lastSeen, setLastSeenState] = useState(getLastSeen);
-  const [dotState, setDotState] = useState('idle'); // idle | showing | dismissing
+  const [dotState, setDotState] = useState('idle');
   const ref = useRef(null);
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const { isAuthenticated, activeRole } = useAuthStore();
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -28,32 +30,60 @@ export default function NotificationDropdown() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [open]);
 
-  const { data: orders } = useQuery({
+  // Buyer: order status notifications
+  const { data: buyerOrders } = useQuery({
     queryKey: ['orders', 'buyer'],
     queryFn: getBuyerOrders,
     select: (res) => (res.data.data || []).slice(0, 20),
-    enabled: open && isAuthenticated,
+    enabled: open && isAuthenticated && activeRole === 'Buyer',
   });
 
+  // Seller: incoming order notifications
+  const { data: sellerOrders } = useQuery({
+    queryKey: ['orders', 'seller'],
+    queryFn: getSellerOrders,
+    select: (res) => (res.data.data || []),
+    enabled: open && isAuthenticated && activeRole === 'Seller',
+  });
+
+  // Driver: available jobs + my jobs
+  const { data: availableJobs } = useQuery({
+    queryKey: ['driver', 'jobs'],
+    queryFn: getAvailableJobs,
+    select: (res) => res.data.data || [],
+    enabled: open && isAuthenticated && activeRole === 'Driver',
+  });
+
+  const { data: myJobs } = useQuery({
+    queryKey: ['driver', 'my-jobs'],
+    queryFn: getDriverMyJobs,
+    select: (res) => res.data.data || [],
+    enabled: open && isAuthenticated && activeRole === 'Driver',
+  });
+
+  // Discounts/promos — only for Buyer and Guest
   const { data: discountsData } = useQuery({
     queryKey: ['active-discounts'],
     queryFn: getActiveDiscounts,
     select: (res) => res.data.data,
-    enabled: open,
+    enabled: open && (!activeRole || activeRole === 'Buyer'),
   });
 
-  const safeOrders = orders || [];
+  const safeBuyerOrders = buyerOrders || [];
+  const safeSellerOrders = sellerOrders || [];
+  const safeJobs = availableJobs || [];
+  const safeMyJobs = myJobs || [];
   const safeDiscounts = discountsData || { vouchers: [], promos: [] };
 
-  const notifications = safeOrders.flatMap((o) => {
+  // ---------- ROLE-SPECIFIC NOTIFICATIONS ----------
+
+  const buyerNotifs = safeBuyerOrders.flatMap((o) => {
     const items = [];
     const itemNames = (o.items || []).map((i) => i.product?.name).filter(Boolean).join(', ');
 
     if (o.status === 'SedangDikirim') {
       items.push({
-        id: `ship-${o.id}`,
-        type: 'shipping',
-        icon: Truck,
+        id: `ship-${o.id}`, type: 'shipping', icon: Truck,
         title: 'Pesanan Dalam Perjalanan',
         desc: itemNames ? `${itemNames} sedang dikirim` : `Pesanan #${o.id} sedang dikirim`,
         time: formatDateShort(o.updatedAt || o.createdAt),
@@ -63,9 +93,7 @@ export default function NotificationDropdown() {
     }
     if (o.status === 'PesananSelesai') {
       items.push({
-        id: `done-${o.id}`,
-        type: 'delivered',
-        icon: CheckCircle,
+        id: `done-${o.id}`, type: 'delivered', icon: CheckCircle,
         title: 'Pesanan Telah Sampai',
         desc: itemNames ? `${itemNames} telah sampai` : `Pesanan #${o.id} telah sampai`,
         time: formatDateShort(o.updatedAt || o.createdAt),
@@ -76,45 +104,80 @@ export default function NotificationDropdown() {
     return items;
   });
 
-  const sortedNotifications = [...notifications].sort((a, b) => b.timestamp - a.timestamp);
+  const sellerNotifs = safeSellerOrders
+    .filter(o => o.status === 'SedangDikemas' || o.status === 'Sedang_Dikemas')
+    .map(o => ({
+      id: `order-${o.id}`, type: 'shipping', icon: Package,
+      title: 'Pesanan Baru Masuk',
+      desc: `Order #${o.id} dari ${o.address?.recipient || 'Pelanggan'}, total ${formatCurrency(o.finalTotal || o.totalAmount)}`,
+      time: formatDateShort(o.createdAt),
+      timestamp: new Date(o.createdAt).getTime(),
+      link: `/seller/orders`,
+    }));
 
+  const driverNotifs = [
+    ...(safeJobs.length > 0 ? [{
+      id: 'jobs-avail', type: 'shipping', icon: Truck,
+      title: 'Pekerjaan Tersedia',
+      desc: `${safeJobs.length} job pengiriman tersedia, cek sekarang`,
+      time: 'Sekarang',
+      timestamp: Date.now(),
+      link: '/driver/jobs',
+    }] : []),
+    ...safeMyJobs.filter(j => j.status === 'SedangDikirim' || j.status === 'Sedang_Dikirim')
+      .map(j => ({
+        id: `active-${j.id}`, type: 'shipping', icon: Truck,
+        title: 'Pengiriman Aktif',
+        desc: `Order #${j.orderId || j.id} sedang dalam perjalanan`,
+        time: formatDateShort(j.updatedAt || j.createdAt),
+        timestamp: new Date(j.updatedAt || j.createdAt).getTime(),
+        link: `/driver/jobs/${j.orderId || j.id}`,
+      })),
+    ...safeMyJobs.filter(j => j.status === 'PesananSelesai' || j.status === 'Pesanan_Selesai')
+      .slice(0, 5)
+      .map(j => ({
+        id: `done-${j.id}`, type: 'delivered', icon: CheckCircle,
+        title: 'Pengiriman Selesai',
+        desc: `Order #${j.orderId || j.id} berhasil diantar, pendapatan Rp${(j.earnings || 0).toLocaleString()}`,
+        time: formatDateShort(j.updatedAt || j.createdAt),
+        timestamp: new Date(j.updatedAt || j.createdAt).getTime(),
+        link: '/driver/dashboard',
+      })),
+  ];
+
+  // ---------- DISCOUNTS (shown to all) ----------
   const discountNotifs = [
     ...safeDiscounts.promos.map((p) => ({
-      id: `promo-${p.id}`,
-      type: 'promo',
-      icon: Ticket,
+      id: `promo-${p.id}`, type: 'promo', icon: Ticket,
       title: `Promo ${p.code}`,
       desc: p.discountType === 'Percentage'
-        ? `Diskon ${p.discountValue}%${p.minOrder ? `, min belanja Rp${p.minOrder.toLocaleString()}` : ''}`
-        : `Diskon Rp${p.discountValue.toLocaleString()}${p.minOrder ? `, min belanja Rp${p.minOrder.toLocaleString()}` : ''}`,
-      time: 'Tersedia',
-      timestamp: 0,
-      link: '/products',
+        ? `Diskon ${p.discountValue}%${p.minOrder ? `, min Rp${p.minOrder.toLocaleString()}` : ''}`
+        : `Diskon Rp${p.discountValue.toLocaleString()}${p.minOrder ? `, min Rp${p.minOrder.toLocaleString()}` : ''}`,
+      time: 'Tersedia', timestamp: 0, link: '/products',
     })),
     ...safeDiscounts.vouchers.map((v) => ({
-      id: `voucher-${v.id}`,
-      type: 'voucher',
-      icon: Percent,
+      id: `voucher-${v.id}`, type: 'voucher', icon: Percent,
       title: `Voucher ${v.code}`,
       desc: v.discountType === 'Percentage'
-        ? `Diskon ${v.discountValue}%${v.minOrder ? `, min belanja Rp${v.minOrder.toLocaleString()}` : ''}`
-        : `Diskon Rp${v.discountValue.toLocaleString()}${v.minOrder ? `, min belanja Rp${v.minOrder.toLocaleString()}` : ''}`,
-      time: 'Tersedia',
-      timestamp: 0,
-      link: '/products',
+        ? `Diskon ${v.discountValue}%${v.minOrder ? `, min Rp${v.minOrder.toLocaleString()}` : ''}`
+        : `Diskon Rp${v.discountValue.toLocaleString()}${v.minOrder ? `, min Rp${v.minOrder.toLocaleString()}` : ''}`,
+      time: 'Tersedia', timestamp: 0, link: '/products',
     })),
   ];
 
-  const allNotifs = [...discountNotifs, ...sortedNotifications];
-  const hasUnread = notifications.length > 0 && notifications.some((n) => n.timestamp > lastSeen);
+  // ---------- MERGE BY ROLE ----------
+  let roleNotifs = [];
+  if (activeRole === 'Buyer') roleNotifs = buyerNotifs;
+  else if (activeRole === 'Seller') roleNotifs = sellerNotifs;
+  else if (activeRole === 'Driver') roleNotifs = driverNotifs;
 
-  // Auto-show dot when new notifications arrive
+  const sortedRoleNotifs = [...roleNotifs].sort((a, b) => b.timestamp - a.timestamp);
+  const allNotifs = [...discountNotifs, ...sortedRoleNotifs];
+  const hasUnread = sortedRoleNotifs.length > 0 && sortedRoleNotifs.some((n) => n.timestamp > lastSeen);
+
   useEffect(() => {
-    if (hasUnread && dotState === 'idle') {
-      setDotState('showing');
-    } else if (!hasUnread && dotState === 'showing') {
-      setDotState('idle');
-    }
+    if (hasUnread && dotState === 'idle') setDotState('showing');
+    else if (!hasUnread && dotState === 'showing') setDotState('idle');
   }, [hasUnread, dotState]);
 
   const handleToggle = useCallback(() => {
@@ -122,7 +185,6 @@ export default function NotificationDropdown() {
       setDotState('dismissing');
       setOpen(true);
     } else {
-      // Re-check: if no unread, just open
       const now = Date.now();
       setLastSeenState(now);
       setLastSeen(now);
@@ -142,20 +204,14 @@ export default function NotificationDropdown() {
 
   return (
     <div ref={ref} className="relative">
-      <button
-        onClick={handleToggle}
-        className="p-2 rounded-full hover:bg-surface-container-low transition-colors relative"
-      >
+      <button onClick={handleToggle} className="p-2 rounded-full hover:bg-surface-container-low transition-colors relative">
         <Bell className="w-5 h-5 text-on-surface-variant" />
         {dotState !== 'idle' && (
-          <span
-            className={cn(
-              'absolute top-2 right-2 w-2 h-2 bg-error rounded-full',
-              dotState === 'showing' && 'animate-dot-in',
-              dotState === 'dismissing' && 'animate-dot-out',
-            )}
-            onAnimationEnd={onDotAnimEnd}
-          />
+          <span className={cn(
+            'absolute top-2 right-2 w-2 h-2 bg-error rounded-full',
+            dotState === 'showing' && 'animate-dot-in',
+            dotState === 'dismissing' && 'animate-dot-out',
+          )} onAnimationEnd={onDotAnimEnd} />
         )}
       </button>
 
@@ -173,12 +229,8 @@ export default function NotificationDropdown() {
           ) : (
             <div className="divide-y divide-outline-variant/10 max-h-[360px] overflow-y-auto">
               {allNotifs.map((n) => (
-                <Link
-                  key={n.id}
-                  to={n.link}
-                  onClick={() => setOpen(false)}
-                  className="flex gap-3 p-4 hover:bg-surface-container-low transition-colors"
-                >
+                <Link key={n.id} to={n.link} onClick={() => setOpen(false)}
+                  className="flex gap-3 p-4 hover:bg-surface-container-low transition-colors">
                   <div className={cn(
                     'w-9 h-9 rounded-xl flex items-center justify-center shrink-0',
                     n.type === 'promo' && 'bg-amber-50 text-amber-600',
