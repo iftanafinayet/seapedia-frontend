@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Plus, Pencil, Trash2, Package, Search, X, ChevronDown } from 'lucide-react';
+import { Plus, Pencil, Trash2, Package, Search, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Skeleton from '../../components/ui/Skeleton';
@@ -82,7 +82,13 @@ export default function ProductManagePage() {
   };
 
   const onSubmit = (data) => {
-    const payload = { ...data, imageUrl };
+    let images = [];
+    try { images = JSON.parse(imageUrl || '[]'); } catch { images = imageUrl ? [imageUrl] : []; }
+    const payload = {
+      ...data,
+      imageUrl: images[0] || '',
+      images: images.length > 0 ? JSON.stringify(images) : '',
+    };
     if (editing) updateMutation.mutate({ id: editing.id, data: payload });
     else createMutation.mutate(payload);
   };
@@ -111,7 +117,7 @@ export default function ProductManagePage() {
               className="p-1 rounded-lg hover:bg-surface-container transition-colors"><X className="w-4 h-4 text-outline" /></button>
           </div>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <ImageUpload value={imageUrl} onChange={setImageUrl} />
+            <ImageUpload value={imageUrl} onChange={(val) => setImageUrl(val)} />
             <Input label="Nama Produk" error={form.formState.errors.name?.message} {...form.register('name')} />
             <div>
               <label className="text-[13px] font-medium text-on-surface-variant mb-1 block">Deskripsi</label>
