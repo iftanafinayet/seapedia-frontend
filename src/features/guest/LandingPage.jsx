@@ -190,15 +190,14 @@ export default function LandingPage() {
       </section>
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-hover p-6 mb-5 text-white shadow-lg">
-        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -ml-12 -mb-12" />
-        <div className="relative z-10">
-          <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-6 mb-3 brightness-0 invert" />
-          <h2 className="text-[22px] font-bold leading-tight mb-2">Temukan Produk Terbaik untuk Kebutuhanmu</h2>
+      <section className="relative overflow-hidden rounded-2xl min-h-dvh mb-5 shadow-lg">
+        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
+          <h2 className="text-[22px] font-bold leading-tight mb-1">Temukan Produk Terbaik untuk Kebutuhanmu</h2>
           <p className="text-[13px] text-white/70 leading-relaxed mb-4">Belanja mudah, pengiriman cepat, dan banyak promo menarik menantimu!</p>
           <Link to="/products">
-            <button className="bg-white text-primary text-[14px] font-bold px-6 py-2.5 rounded-xl hover:bg-white/90 active:scale-95 transition-all flex items-center gap-2">
+            <button className="bg-white text-primary text-[14px] font-bold px-6 py-2.5 rounded-xl hover:bg-white/90 active:scale-95 transition-all flex items-center gap-2 w-fit">
               Mulai Belanja <ArrowRight className="w-4 h-4" />
             </button>
           </Link>
@@ -285,17 +284,17 @@ export default function LandingPage() {
   const DesktopLanding = () => (
     <div className="hidden lg:block">
       {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden bg-gradient-to-br from-surface via-surface to-primary-fixed/30">
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent z-10" />
-        <div className="absolute right-0 top-0 w-1/2 h-full bg-primary-fixed/20" />
+      <section className="relative h-[500px] overflow-hidden">
+        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10" />
         <div className="relative z-20 h-full flex flex-col justify-center px-8 max-w-content mx-auto">
-          <span className="inline-block px-3 py-1 bg-primary-container text-on-primary-container text-[12px] font-medium rounded-full mb-6 w-fit uppercase tracking-[0.05em]">
+          <span className="inline-block px-3 py-1 bg-primary/80 text-white text-[12px] font-medium rounded-full mb-6 w-fit uppercase tracking-[0.05em] backdrop-blur-sm">
             Premium Marketplace
           </span>
-          <h2 className="text-[48px] font-bold leading-[56px] tracking-[-0.02em] text-on-surface mb-6 max-w-2xl">
+          <h2 className="text-[48px] font-bold leading-[56px] tracking-[-0.02em] text-white mb-6 max-w-2xl">
             {hero.heroTitle || 'Belanja Mudah di SEAPEDIA'}
           </h2>
-          <p className="text-[18px] leading-[28px] text-on-surface-variant mb-10 max-w-lg">
+          <p className="text-[18px] leading-[28px] text-white/70 mb-10 max-w-lg">
             {hero.heroSubtitle || 'Temukan perlengkapan maritim terbaik dari seluruh dunia dalam satu platform. Kualitas terjamin untuk petualangan laut Anda.'}
           </p>
           <div className="flex gap-4">
@@ -303,7 +302,7 @@ export default function LandingPage() {
               <Button size="lg" className="px-8 py-4 text-[14px] font-semibold">{hero.heroCtaText || 'Mulai Belanja'}</Button>
             </Link>
             <Link to="/products">
-              <button className="border border-primary text-primary px-8 py-4 rounded-[8px] text-[14px] font-semibold hover:bg-primary/5 transition-all active:scale-[0.98]">
+              <button className="border border-white/50 text-white px-8 py-4 rounded-[8px] text-[14px] font-semibold hover:bg-white/10 transition-all active:scale-[0.98] backdrop-blur-sm">
                 Lihat Katalog
               </button>
             </Link>
