@@ -19,7 +19,18 @@ const productSchema = z.object({
   description: z.string().optional(),
   price: z.coerce.number().positive('Harga harus lebih dari 0'),
   stock: z.coerce.number().int().min(0, 'Stok minimal 0'),
+  category: z.enum(['Beauty', 'Fashion', 'Electronic', 'Grocery', 'Home', 'Sport', 'General']).default('General'),
 });
+
+const CATEGORIES = [
+  { value: 'Beauty', label: 'Beauty' },
+  { value: 'Fashion', label: 'Fashion' },
+  { value: 'Electronic', label: 'Electronic' },
+  { value: 'Grocery', label: 'Grocery' },
+  { value: 'Home', label: 'Home' },
+  { value: 'Sport', label: 'Sport' },
+  { value: 'General', label: 'General' },
+];
 
 export default function ProductManagePage() {
   const [showForm, setShowForm] = useState(false);
@@ -74,7 +85,7 @@ export default function ProductManagePage() {
   const startEdit = (p) => {
     setEditing(p);
     setImageUrl(p.imageUrl || '');
-    form.reset({ name: p.name, description: p.description || '', price: p.price, stock: p.stock });
+    form.reset({ name: p.name, description: p.description || '', price: p.price, stock: p.stock, category: p.category || 'General' });
   };
 
   const onSubmit = (data) => {
@@ -110,6 +121,14 @@ export default function ProductManagePage() {
             <div className="grid grid-cols-2 gap-3">
               <Input label="Harga (Rp)" type="number" error={form.formState.errors.price?.message} {...form.register('price')} />
               <Input label="Stok" type="number" error={form.formState.errors.stock?.message} {...form.register('stock')} />
+            </div>
+            <div>
+              <label className="label">Kategori</label>
+              <select className="input-field" {...form.register('category')}>
+                {CATEGORIES.map((c) => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
             </div>
             <div className="flex gap-2">
               <Button type="submit" size="sm" disabled={createMutation.isPending || updateMutation.isPending}>

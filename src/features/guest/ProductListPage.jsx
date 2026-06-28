@@ -87,6 +87,7 @@ function ProductImage({ p }) {
 export default function ProductListPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const categoryParam = searchParams.get('category') || '';
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
@@ -98,8 +99,8 @@ export default function ProductListPage() {
   }, [search]);
 
   const { data: products, isLoading, isError } = useQuery({
-    queryKey: ['products', debouncedSearch, activeFilter],
-    queryFn: () => getProducts({ search: debouncedSearch || undefined, sort: activeFilter || 'popular' }),
+    queryKey: ['products', debouncedSearch, activeFilter, categoryParam],
+    queryFn: () => getProducts({ search: debouncedSearch || undefined, sort: activeFilter || undefined, category: categoryParam || undefined }),
     select: (res) => res.data.data || [],
   });
 
@@ -111,12 +112,14 @@ export default function ProductListPage() {
       <section className="mb-6 lg:mb-8">
         <div className="mb-1 lg:mb-3">
           <h1 className="text-[22px] lg:text-[32px] font-semibold text-on-surface tracking-tight">
-            {debouncedSearch ? `"${debouncedSearch}"` : 'Oceanic Treasures'}
+            {debouncedSearch ? `"${debouncedSearch}"` : categoryParam || 'Semua Produk'}
           </h1>
           <p className="text-[14px] lg:text-[16px] text-on-surface-variant mt-1">
             {debouncedSearch
-              ? `${safeProducts.length} products found`
-              : 'Discover the finest maritime essentials and lifestyle goods.'
+              ? `${safeProducts.length} produk ditemukan`
+              : categoryParam
+              ? `Jelajahi produk kategori ${categoryParam}`
+              : 'Temukan berbagai produk terbaik untuk kebutuhanmu'
             }
           </p>
         </div>

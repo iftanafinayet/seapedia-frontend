@@ -10,12 +10,12 @@ import useAuthStore from '../../stores/authStore';
 import NotificationDropdown from '../../components/shared/NotificationDropdown';
 import { cn } from '../../lib/utils';
 const categories = [
-  { label: 'Beauty', icon: Sparkles, keyword: 'beauty' },
-  { label: 'Fashion', icon: Shirt, keyword: 'fashion' },
-  { label: 'Electronic', icon: Smartphone, keyword: 'elektronik' },
-  { label: 'Grocery', icon: ShoppingBag, keyword: 'grocery' },
-  { label: 'Home', icon: Home, keyword: 'home' },
-  { label: 'Sport', icon: Trophy, keyword: 'sport' },
+  { label: 'Beauty', icon: Sparkles, value: 'Beauty' },
+  { label: 'Fashion', icon: Shirt, value: 'Fashion' },
+  { label: 'Electronic', icon: Smartphone, value: 'Electronic' },
+  { label: 'Grocery', icon: ShoppingBag, value: 'Grocery' },
+  { label: 'Home', icon: Home, value: 'Home' },
+  { label: 'Sport', icon: Trophy, value: 'Sport' },
 ];
 
 const getProductImage = (product) => {
@@ -189,6 +189,22 @@ export default function LandingPage() {
         <NotificationDropdown />
       </section>
 
+      {/* Hero Banner */}
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-hover p-6 mb-5 text-white shadow-lg">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -ml-12 -mb-12" />
+        <div className="relative z-10">
+          <img src="/seapediaweblogo.svg" alt="SEAPEDIA" className="h-6 mb-3 brightness-0 invert" />
+          <h2 className="text-[22px] font-bold leading-tight mb-2">Temukan Produk Terbaik untuk Kebutuhanmu</h2>
+          <p className="text-[13px] text-white/70 leading-relaxed mb-4">Belanja mudah, pengiriman cepat, dan banyak promo menarik menantimu!</p>
+          <Link to="/products">
+            <button className="bg-white text-primary text-[14px] font-bold px-6 py-2.5 rounded-xl hover:bg-white/90 active:scale-95 transition-all flex items-center gap-2">
+              Mulai Belanja <ArrowRight className="w-4 h-4" />
+            </button>
+          </Link>
+        </div>
+      </section>
+
       {/* Deals of the Day */}
       {deals && deals.length > 0 && (
         <section className="mb-5">
@@ -211,7 +227,7 @@ export default function LandingPage() {
         <h3 className="text-[15px] font-semibold text-on-surface mb-3">Browse Categories</h3>
         <div className="flex gap-3 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
           {categories.map((cat) => (
-            <Link key={cat.label} to={`/products?search=${cat.keyword}`} className="flex flex-col items-center shrink-0 w-[72px]">
+            <Link key={cat.label} to={`/products?category=${cat.value}`} className="flex flex-col items-center shrink-0 w-[72px]">
               <div className="w-[60px] h-[60px] rounded-xl bg-surface-container-low flex items-center justify-center text-2xl mb-1.5"><cat.icon /></div>
               <span className="text-[11px] font-medium text-on-surface-variant text-center">{cat.label}</span>
             </Link>
