@@ -14,7 +14,7 @@
     font-size: 14px;
     line-height: 1.5;
     color: #151b26;
-    background-color: #f5f9ff;
+    background: linear-gradient(180deg, #dce8fa 0%, #f5f9ff 100%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;

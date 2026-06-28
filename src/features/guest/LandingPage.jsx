@@ -189,17 +189,23 @@ export default function LandingPage() {
       </section>
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-2xl mb-5 shadow-lg">
-        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="w-full h-auto block" />
+      <section className="relative overflow-hidden rounded-2xl mb-5 shadow-lg" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <img src="/seapediaherobanner.webp" alt="" className="w-full h-auto block" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col justify-end p-6 text-white">
-          <h2 className="text-[22px] font-bold leading-tight mb-1">Temukan Produk Terbaik untuk Kebutuhanmu</h2>
-          <p className="text-[13px] text-white/70 leading-relaxed mb-4">Belanja mudah, pengiriman cepat, dan banyak promo menarik menantimu!</p>
-          <Link to="/products">
-            <button className="bg-white text-primary text-[14px] font-bold px-6 py-2.5 rounded-xl hover:bg-white/90 active:scale-95 transition-all flex items-center gap-2 w-fit">
-              Mulai Belanja <ArrowRight className="w-4 h-4" />
-            </button>
-          </Link>
+        <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col justify-end p-5 text-white">
+          <h2 className="text-[24px] font-extrabold leading-[110%] tracking-[-0.5px] mb-2 text-white">
+            Belanja Cerdas Dimulai di SEAPEDIA
+          </h2>
+          <p className="text-[13px] font-normal leading-[170%] text-white/80 max-w-[400px] mb-4">
+            Temukan ribuan produk berkualitas dengan proses belanja yang cepat, aman, dan nyaman.
+          </p>
+          <div className="flex gap-3">
+            <Link to="/products">
+              <button className="w-[140px] h-[44px] bg-white/90 backdrop-blur-sm border-2 border-[#1C61B7] text-[#1C61B7] text-[14px] font-semibold rounded-xl hover:bg-white active:scale-[0.97] transition-all cursor-pointer">
+                Jelajahi Katalog
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -294,7 +300,7 @@ export default function LandingPage() {
             </div>
             <h2 className="text-[64px] font-extrabold leading-[110%] tracking-[-2px] max-w-[600px] mb-[28px]">
               <span className="text-[#1A237E]">Belanja Cerdas</span>{' '}
-              <span className="bg-gradient-to-r from-[#42A5F5] to-[#90CAF9] bg-clip-text text-transparent">Dimulai di</span>{' '}
+              <span className="text-[#1A237E]">Dimulai di</span>{' '}
               <span className="bg-gradient-to-r from-[#F97316] to-[#FDBA74] bg-clip-text text-transparent">
                 SEAPEDIA
               </span>
