@@ -190,10 +190,10 @@ export default function LandingPage() {
       </section>
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-2xl min-h-dvh mb-5 shadow-lg">
-        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-        <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
+      <section className="relative overflow-hidden rounded-2xl mb-5 shadow-lg">
+        <img src="/seapediaherobanner.webp" alt="SEAPEDIA" className="w-full h-auto block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col justify-end p-6 text-white">
           <h2 className="text-[22px] font-bold leading-tight mb-1">Temukan Produk Terbaik untuk Kebutuhanmu</h2>
           <p className="text-[13px] text-white/70 leading-relaxed mb-4">Belanja mudah, pengiriman cepat, dan banyak promo menarik menantimu!</p>
           <Link to="/products">
