@@ -5,9 +5,9 @@ import Footer from '../components/shared/Footer';
 
 export default function PublicLayout() {
   return (
-    <div className="min-h-dvh bg-surface pb-[80px] lg:pb-0">
+    <div className="min-h-dvh flex flex-col">
       <TopBar />
-      <main className="pt-[64px] lg:pt-16">
+      <main className="flex-1 pt-[64px] lg:pt-16 pb-[80px] lg:pb-0">
         <Outlet />
       </main>
       <Footer />
