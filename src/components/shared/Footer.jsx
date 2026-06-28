@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="hidden lg:block text-center py-4 border-t border-outline-variant/20">
+    <footer className="text-center px-4 pt-0 lg:pt-4 pb-[88px] lg:pb-4 border-t border-outline-variant/20">
       <p className="text-[13px] font-bold text-on-surface">SEAPEDIA</p>
       <p className="text-[11px] text-outline mt-0.5">&copy; {new Date().getFullYear()} All rights reserved.</p>
     </footer>
