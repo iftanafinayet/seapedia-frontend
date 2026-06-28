@@ -119,7 +119,7 @@ export default function ProductListPage() {
   }, [search]);
 
   return (
-    <div className="max-w-content mx-auto px-4 lg:px-6 pt-4 pb-20 lg:pb-8">
+    <div className="max-w-content mx-auto px-4 lg:px-6 pt-4 pb-6 lg:pb-8">
       {/* Hero / Search Banner */}
       <section className="mb-6 lg:mb-8">
         <div className="mb-1 lg:mb-3">
@@ -269,11 +269,6 @@ export default function ProductListPage() {
           </button>
         </div>
       )}
-
-      <footer className="mt-8 pt-4 border-t border-outline-variant/20 text-center">
-        <p className="text-[13px] font-bold text-on-surface">SEAPEDIA</p>
-        <p className="text-[11px] text-outline mt-1">&copy; 2024 SEAPEDIA. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

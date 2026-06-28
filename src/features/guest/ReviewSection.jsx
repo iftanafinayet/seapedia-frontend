@@ -211,8 +211,6 @@ export default function ReviewSection() {
           ))}
         </div>
       )}
-
-      <p className="text-center text-sm text-gray-500 mt-6">Semua hak cipta dilindungi &copy; 2026 Seapedia</p>
     </div>
 
   );

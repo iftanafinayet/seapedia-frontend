@@ -278,11 +278,6 @@ export default function LandingPage() {
           </button>
         </Link>
       </section>
-
-      <footer className="text-center pb-4 pt-2">
-        <p className="text-[13px] font-bold text-on-surface">SEAPEDIA</p>
-        <p className="text-[11px] text-outline mt-0.5">&copy; {new Date().getFullYear()} All rights reserved.</p>
-      </footer>
     </div>
   );
 
