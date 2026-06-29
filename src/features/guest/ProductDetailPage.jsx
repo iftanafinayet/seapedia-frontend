@@ -125,7 +125,7 @@ export default function ProductDetailPage() {
   const safeReviews = reviews || [];
 
   return (
-    <div className="max-w-content mx-auto pb-[100px] lg:pb-0 lg:pt-6">
+    <div className="max-w-content mx-auto pb-[100px] lg:pb-0 lg:pt-6 overflow-x-hidden">
       {/* Desktop back button */}
       <button
         onClick={() => navigate(-1)}
@@ -191,7 +191,7 @@ export default function ProductDetailPage() {
             <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-secondary-container text-on-secondary-container text-[11px] font-semibold uppercase tracking-wider mb-3">
               Premium Series
             </span>
-            <h1 className="text-[22px] lg:text-[32px] font-bold text-on-surface leading-tight tracking-tight">
+            <h1 className="text-[22px] lg:text-[32px] font-bold text-on-surface leading-tight tracking-tight break-words">
               {product.name}
             </h1>
             <div className="flex items-baseline gap-3 mt-3">
@@ -214,18 +214,18 @@ export default function ProductDetailPage() {
           {/* Store Info */}
           {product.store && (
             <Link to={`/stores/${product.store.id}`} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 flex items-center justify-between shadow-card hover:shadow-card-hover transition-all">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-xl bg-primary-fixed flex items-center justify-center overflow-hidden">
+                <div className="flex items-center gap-3 min-w-0">
+                <div className="w-11 h-11 rounded-xl bg-primary-fixed flex items-center justify-center overflow-hidden shrink-0">
                   {product.store.logoUrl ? (
                     <img src={product.store.logoUrl} alt={product.store.name} className="w-full h-full object-cover" />
                   ) : (
                     <Store className="w-5 h-5 text-primary" />
                   )}
                 </div>
-                <div>
-                  <p className="text-[14px] font-semibold text-on-surface">{product.store.name}</p>
+                <div className="min-w-0">
+                  <p className="text-[14px] font-semibold text-on-surface truncate">{product.store.name}</p>
                   <div className="flex items-center gap-1 text-on-surface-variant text-[12px]">
-                    <span>{product.store.city || ''}</span>
+                    <span className="truncate">{product.store.city || ''}</span>
                   </div>
                 </div>
               </div>
@@ -305,14 +305,14 @@ export default function ProductDetailPage() {
               <MessageCircle className="w-4 h-4 text-primary" />
               <span className="text-[13px] font-semibold text-on-surface">Write a Review</span>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 placeholder="Your name"
                 value={reviewName}
                 onChange={(e) => setReviewName(e.target.value)}
                 className="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary-container"
               />
-              <div className="flex gap-0.5 items-center">
+              <div className="flex gap-0.5 items-center self-end sm:self-auto">
                 {[1,2,3,4,5].map(s => (
                   <button key={s} onClick={() => setReviewRating(s)} className="p-1">
                     <Star className={`w-5 h-5 ${s <= reviewRating ? 'text-amber-400 fill-amber-400' : 'text-outline-variant'}`} />

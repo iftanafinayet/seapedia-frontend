@@ -8,6 +8,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Skeleton from '../../components/ui/Skeleton';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
+import Modal from '../../components/ui/Modal';
 import ImageUpload from '../../components/ui/ImageUpload';
 import { getSellerProducts, createProduct, updateProduct, deleteProduct } from '../../api/seller';
 import { formatCurrency } from '../../lib/utils';
@@ -101,47 +102,39 @@ export default function ProductManagePage() {
           <h1 className="text-[20px] font-bold text-on-surface">Produk</h1>
           <p className="text-[12px] text-on-surface-variant mt-0.5">{safeProducts.length} produk · {filtered.length} ditampilkan</p>
         </div>
-        {!editing && (
-          <Button size="sm" onClick={() => { setShowForm(!showForm); setEditing(null); setImageUrl(''); if (!showForm) form.reset(); }}>
-            <Plus className="w-4 h-4" /> {showForm ? 'Tutup' : 'Tambah'}
-          </Button>
-        )}
+        <Button size="sm" onClick={() => { setShowForm(true); setEditing(null); setImageUrl(''); form.reset(); }}>
+          <Plus className="w-4 h-4" /> Tambah
+        </Button>
       </div>
 
-      {/* Add/Edit Form */}
-      {(showForm || editing) && (
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[15px] font-semibold text-on-surface">{editing ? 'Edit Produk' : 'Tambah Produk Baru'}</h2>
-            <button onClick={() => { setShowForm(false); setEditing(null); setImageUrl(''); form.reset(); }}
-              className="p-1 rounded-lg hover:bg-surface-container transition-colors"><X className="w-4 h-4 text-outline" /></button>
+      {/* Add/Edit Modal */}
+      <Modal open={!!(showForm || editing)} onClose={() => { setShowForm(false); setEditing(null); setImageUrl(''); form.reset(); }}
+        title={editing ? 'Edit Produk' : 'Tambah Produk Baru'}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <ImageUpload value={imageUrl} onChange={(val) => setImageUrl(val)} />
+          <Input label="Nama Produk" error={form.formState.errors.name?.message} {...form.register('name')} />
+          <div>
+            <label className="text-[13px] font-medium text-on-surface-variant mb-1 block">Deskripsi</label>
+            <textarea rows={2} placeholder="Deskripsi singkat produk..." className="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-[14px] text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none" {...form.register('description')} />
           </div>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <ImageUpload value={imageUrl} onChange={(val) => setImageUrl(val)} />
-            <Input label="Nama Produk" error={form.formState.errors.name?.message} {...form.register('name')} />
-            <div>
-              <label className="text-[13px] font-medium text-on-surface-variant mb-1 block">Deskripsi</label>
-              <textarea rows={2} placeholder="Deskripsi singkat produk..." className="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-[14px] text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none" {...form.register('description')} />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <Input label="Harga (Rp)" type="number" error={form.formState.errors.price?.message} {...form.register('price')} />
-              <Input label="Stok" type="number" error={form.formState.errors.stock?.message} {...form.register('stock')} />
-            </div>
-            <div>
-              <label className="text-[13px] font-medium text-on-surface-variant mb-1 block">Kategori</label>
-              <select className="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-[14px] text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" {...form.register('category')}>
-                {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
-              </select>
-            </div>
-            <div className="flex gap-2 pt-1">
-              <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                {(createMutation.isPending || updateMutation.isPending) ? 'Menyimpan...' : (editing ? 'Update' : 'Simpan')}
-              </Button>
-              <Button variant="outline" onClick={() => { setShowForm(false); setEditing(null); setImageUrl(''); form.reset(); }}>Batal</Button>
-            </div>
-          </form>
-        </div>
-      )}
+          <div className="grid grid-cols-2 gap-3">
+            <Input label="Harga (Rp)" type="number" error={form.formState.errors.price?.message} {...form.register('price')} />
+            <Input label="Stok" type="number" error={form.formState.errors.stock?.message} {...form.register('stock')} />
+          </div>
+          <div>
+            <label className="text-[13px] font-medium text-on-surface-variant mb-1 block">Kategori</label>
+            <select className="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2.5 text-[14px] text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none" {...form.register('category')}>
+              {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+            </select>
+          </div>
+          <div className="flex gap-2 pt-1">
+            <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
+              {(createMutation.isPending || updateMutation.isPending) ? 'Menyimpan...' : (editing ? 'Update' : 'Simpan')}
+            </Button>
+            <Button variant="outline" onClick={() => { setShowForm(false); setEditing(null); setImageUrl(''); form.reset(); }}>Batal</Button>
+          </div>
+        </form>
+      </Modal>
 
       {/* Search */}
       {!isLoading && safeProducts.length > 0 && (

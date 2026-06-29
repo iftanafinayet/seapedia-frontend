@@ -1,6 +1,10 @@
 import { useState, useRef } from 'react';
-import { Upload, X, Loader2, Plus } from 'lucide-react';
+import { X, Loader2, Plus } from 'lucide-react';
 import api from '../../api/client';
+import useUiStore from '../../stores/uiStore';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_IMAGES = 5;
 
 export default function ImageUpload({ value, onChange }) {
   const [uploading, setUploading] = useState(false);
@@ -10,7 +14,7 @@ export default function ImageUpload({ value, onChange }) {
     try { return JSON.parse(value); } catch { return value ? [value] : []; }
   });
   const fileRef = useRef(null);
-  const allImages = images;
+  const addNotification = useUiStore((s) => s.addNotification);
 
   const updateParent = (imgs) => {
     onChange(imgs.length > 0 ? JSON.stringify(imgs) : '');
@@ -20,28 +24,51 @@ export default function ImageUpload({ value, onChange }) {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
+    const slot = MAX_IMAGES - images.length;
+    if (slot <= 0) return;
+
+    const toUpload = files.slice(0, slot);
+    let skipped = 0;
     setUploading(true);
-    const uploaded = [];
-    try {
-      for (const file of files) {
-        if (file.size > 5 * 1024 * 1024) continue;
+
+    const results = await Promise.allSettled(
+      toUpload.map(async (file) => {
+        if (file.size > MAX_FILE_SIZE) {
+          skipped++;
+          return null;
+        }
         const form = new FormData();
         form.append('image', file);
         const { data } = await api.post('/upload', form);
-        uploaded.push(data.data.url);
-      }
-      const newImages = [...allImages, ...uploaded];
-      setImages(newImages);
-      updateParent(newImages);
-    } catch (err) {
-      alert('Upload failed');
-    } finally {
-      setUploading(false);
+        return data.data.url;
+      })
+    );
+
+    setUploading(false);
+
+    if (skipped > 0) {
+      addNotification(`${skipped} file(s) skipped (max 10MB each)`, 'warning');
     }
+
+    const uploaded = results
+      .filter((r) => r.status === 'fulfilled' && r.value)
+      .map((r) => r.value);
+
+    const errors = results.filter((r) => r.status === 'rejected');
+    if (errors.length > 0) {
+      const msgs = errors.map(r => r.reason?.response?.data?.message || r.reason?.message).filter(Boolean);
+      addNotification(msgs[0] || `${errors.length} image(s) failed to upload`, 'error');
+    }
+
+    if (uploaded.length === 0) return;
+
+    const newImages = [...images, ...uploaded];
+    setImages(newImages);
+    updateParent(newImages);
   };
 
   const removeImage = (index) => {
-    const newImages = allImages.filter((_, i) => i !== index);
+    const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
     updateParent(newImages);
   };
@@ -49,10 +76,10 @@ export default function ImageUpload({ value, onChange }) {
   return (
     <div>
       <label className="text-[14px] font-medium text-on-surface-variant mb-2 block">
-        Product Images ({allImages.length}/5)
+        Product Images ({images.length}/{MAX_IMAGES})
       </label>
       <div className="flex flex-wrap gap-3">
-        {allImages.map((url, i) => (
+        {images.map((url, i) => (
           <div key={i} className="relative w-24 h-24 rounded-xl overflow-hidden border border-outline-variant">
             <img src={url} alt="" className="w-full h-full object-cover" />
             <button
@@ -63,7 +90,7 @@ export default function ImageUpload({ value, onChange }) {
             </button>
           </div>
         ))}
-        {allImages.length < 5 && (
+        {images.length < MAX_IMAGES && (
           <label className="flex flex-col items-center justify-center w-24 h-24 rounded-xl border-2 border-dashed border-outline-variant hover:border-primary cursor-pointer transition-colors bg-surface-container-low">
             {uploading ? (
               <Loader2 className="w-5 h-5 text-primary animate-spin" />
