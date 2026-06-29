@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import PublicLayout from './layouts/PublicLayout'
 import DashboardLayout from './layouts/DashboardLayout'
@@ -183,6 +183,9 @@ export default function App() {
             <ProtectedRoute role="Seller"><ReportPage /></ProtectedRoute>
           } />
         </Route>
+
+        {/* Catch-all — redirect unknown paths to Home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   )
