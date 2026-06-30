@@ -138,7 +138,13 @@ export default function CheckoutPage() {
             <div className="divide-y divide-outline-variant/10">
               {selectedItems.map((item) => (
                 <div key={item.productId} className="flex gap-3 py-2 first:pt-0 last:pb-0">
-                  <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0"><ShoppingBag className="w-5 h-5 text-outline/40" /></div>
+                  <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 overflow-hidden">
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <ShoppingBag className="w-5 h-5 text-outline/40" />
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0"><p className="text-[13px] font-medium line-clamp-1">{item.name}</p><p className="text-[12px] text-on-surface-variant">{item.quantity} x {formatCurrency(item.price)}</p></div>
                   <p className="text-[13px] font-semibold shrink-0">{formatCurrency(item.price * item.quantity)}</p>
                 </div>

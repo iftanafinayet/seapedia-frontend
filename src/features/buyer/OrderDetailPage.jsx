@@ -82,8 +82,12 @@ export default function OrderDetailPage() {
               className="bg-surface-container-lowest rounded-xl border border-outline-variant/20 overflow-hidden"
             >
               <div className="flex gap-4 p-4">
-                <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-xl bg-surface-container-low flex items-center justify-center shrink-0">
-                  <ShoppingBag className="w-8 h-8 text-outline/40" />
+                <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-xl bg-surface-container-low flex items-center justify-center shrink-0 overflow-hidden">
+                  {item.product?.imageUrl ? (
+                    <img src={item.product.imageUrl} alt={item.product.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <ShoppingBag className="w-8 h-8 text-outline/40" />
+                  )}
                 </div>
                 <div className="flex-1 min-w-0 space-y-2">
                   <div>

@@ -14,7 +14,7 @@ const guestNav = [
 ];
 
 const buyerNav = [
-  { to: '/buyer/dashboard', icon: Home, label: 'Home', exact: true },
+  { to: '/', icon: Home, label: 'Home', exact: true },
   { to: '/products', icon: Grid3X3, label: 'Katalog' },
   { to: '/buyer/orders', icon: MessageSquare, label: 'Orders' },
 ];
@@ -53,7 +53,7 @@ export default function TopBar({ onMenuClick }) {
   };
 
   const getDashboardLink = () => {
-    if (activeRole === 'Buyer') return '/buyer/dashboard';
+    if (activeRole === 'Buyer') return '/';
     if (activeRole === 'Seller') return '/seller/dashboard';
     if (activeRole === 'Driver') return '/driver/dashboard';
     if (activeRole === 'Admin') return '/admin/dashboard';

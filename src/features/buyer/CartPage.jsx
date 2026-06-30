@@ -76,7 +76,11 @@ export default function CartPage() {
                   </button>
 
                   <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-lg overflow-hidden bg-surface-container shrink-0 flex items-center justify-center">
-                    <ShoppingBag className="w-7 h-7 text-outline/40" />
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <ShoppingBag className="w-7 h-7 text-outline/40" />
+                    )}
                   </div>
 
                   <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
