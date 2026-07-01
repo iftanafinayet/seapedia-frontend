@@ -166,7 +166,6 @@ src/
 │   ├── driver.js
 │   └── guest.js
 ├── components/
-│   ├── forms/        # Reusable form fields & validators
 │   ├── shared/       # TopBar, Footer, Sidebar, Notifications, Chat
 │   └── ui/           # Button, Input, Modal, Card, Badge, Skeleton, Toast, ImageUpload, ConfirmDialog
 ├── features/         # Page-level components (grouped by role)
@@ -176,7 +175,6 @@ src/
 │   ├── driver/       # Driver pages (Dashboard, JobBoard, JobDetail, History)
 │   ├── guest/        # Landing, ProductList, ProductDetail, Reviews, Store
 │   └── seller/       # Seller pages (Dashboard, Store, Products, Orders, Reports)
-├── hooks/            # Custom React hooks (useLocalStorage, useNotification)
 ├── layouts/          # Role-based layout wrappers
 │   ├── PublicLayout.jsx     # Glass TopBar + footer flex layout
 │   ├── DashboardLayout.jsx  # Sidebar + main area

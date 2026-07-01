@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 const useUiStore = create((set) => ({
-  sidebarOpen: false,
   notifications: [],
 
   addNotification: (message, type = 'info') => {
@@ -21,8 +20,6 @@ const useUiStore = create((set) => ({
     notifications: state.notifications.filter((n) => n.id !== id),
   })),
 
-  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-  setSidebarOpen: (open) => set({ sidebarOpen: open }),
 }));
 
 export default useUiStore;
