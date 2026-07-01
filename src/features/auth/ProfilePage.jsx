@@ -105,7 +105,7 @@ export default function ProfilePage() {
   const isBuyer = activeRole === 'Buyer';
 
   const profileHeader = (
-    <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5">
+    <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
       <div className="flex items-center gap-4">
         <div className="w-14 h-14 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[20px] font-bold shrink-0 shadow-clay-sm">
           {user?.username?.charAt(0)?.toUpperCase() || 'U'}
@@ -141,11 +141,11 @@ export default function ProfilePage() {
   );
 
   const buyerLockedFeatures = (
-    <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5">
+    <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4">
       <h3 className="text-[14px] font-semibold text-on-surface mb-4">Fitur Pembeli</h3>
       <div className="space-y-3">
         {[{ icon: Receipt, label: 'Pesanan Saya' }, { icon: ShoppingCart, label: 'Keranjang' }, { icon: TrendingUp, label: 'Riwayat Transaksi' }].map((f, i) => (
-          <div key={i} className="flex items-center gap-3 bg-surface-container rounded-xl p-4 opacity-50">
+          <div key={i} className="flex items-center gap-3 bg-surface-container rounded-xl p-3 opacity-50">
             <div className="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center">
               <f.icon className="w-4 h-4 text-on-surface-variant" />
             </div>
@@ -166,33 +166,33 @@ export default function ProfilePage() {
   );
 
   const buyerWalletCard = (
-    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-hover p-5 lg:p-8 text-on-primary shadow-lg group">
+    <section className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary-hover p-4 text-on-primary shadow-lg group">
       <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32 transition-transform duration-700 group-hover:scale-110" />
       <div className="relative z-10">
         <div className="flex justify-between items-start mb-3">
-          <p className="text-[13px] lg:text-[14px] font-medium opacity-80">Saldo Dompet</p>
-          <Wallet className="w-5 h-5 lg:w-6 lg:h-6" />
+          <p className="text-[13px] font-medium opacity-80">Saldo Dompet</p>
+          <Wallet className="w-5 h-5" />
         </div>
-        <h2 className="text-[32px] lg:text-[48px] font-bold tracking-tight leading-tight">{formatCurrency(walletBalance)}</h2>
+        <h2 className="text-[32px] font-bold tracking-tight leading-tight">{formatCurrency(walletBalance)}</h2>
         <div className="flex items-center gap-2 text-on-primary/70 mt-1">
           <TrendingUp className="w-3.5 h-3.5" />
-          <span className="text-[11px] lg:text-[12px]">Kelola keuangan kamu disini</span>
+          <span className="text-[11px]">Kelola keuangan kamu disini</span>
         </div>
-        <div className="mt-5 lg:mt-6 flex gap-3">
+        <div className="mt-4 flex gap-2">
           {!topupOpen ? (
             <>
               <Link to="/buyer/wallet" className="flex-1">
-                <button className="w-full bg-white text-primary text-[14px] font-semibold py-3 rounded-xl hover:bg-white/90 active:scale-95 transition-all">Add Funds</button>
+                <button className="w-full bg-white text-primary text-[13px] font-semibold py-2.5 rounded-xl hover:bg-white/90 active:scale-95 transition-all">Add Funds</button>
               </Link>
-              <button onClick={() => setTopupOpen(true)} className="flex-1 bg-white/20 backdrop-blur-sm text-white text-[14px] font-semibold py-3 rounded-xl hover:bg-white/30 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+              <button onClick={() => setTopupOpen(true)} className="flex-1 bg-white/20 backdrop-blur-sm text-white text-[13px] font-semibold py-2.5 rounded-xl hover:bg-white/30 active:scale-95 transition-all flex items-center justify-center gap-1.5">
                 <Plus className="w-4 h-4" /> Top Up Cepat
               </button>
             </>
           ) : (
             <div className="flex-1 flex gap-2">
-              <input type="number" value={topupAmount} onChange={(e) => setTopupAmount(e.target.value)} autoFocus placeholder="Jumlah (Rp)" className="flex-1 bg-white/20 backdrop-blur text-white placeholder:text-white/60 rounded-xl px-4 py-3 text-[14px] outline-none border border-white/30" />
-              <button onClick={() => { const a = parseFloat(topupAmount); if (a > 0) topupMutation.mutate(a); }} disabled={topupMutation.isPending} className="px-4 py-3 bg-white text-primary text-[14px] font-semibold rounded-xl hover:bg-white/90 disabled:opacity-50 whitespace-nowrap">{topupMutation.isPending ? '...' : 'OK'}</button>
-              <button onClick={() => setTopupOpen(false)} className="px-3 py-3 text-white/60 text-[13px]">Batal</button>
+              <input type="number" value={topupAmount} onChange={(e) => setTopupAmount(e.target.value)} autoFocus placeholder="Jumlah (Rp)" className="flex-1 bg-white/20 backdrop-blur text-white placeholder:text-white/60 rounded-xl px-3 py-2.5 text-[13px] outline-none border border-white/30" />
+              <button onClick={() => { const a = parseFloat(topupAmount); if (a > 0) topupMutation.mutate(a); }} disabled={topupMutation.isPending} className="px-3 py-2.5 bg-white text-primary text-[13px] font-semibold rounded-xl hover:bg-white/90 disabled:opacity-50 whitespace-nowrap">{topupMutation.isPending ? '...' : 'OK'}</button>
+              <button onClick={() => setTopupOpen(false)} className="px-2 py-2.5 text-white/60 text-[12px]">Batal</button>
             </div>
           )}
         </div>
@@ -202,7 +202,7 @@ export default function ProfilePage() {
 
   const buyerQuickActions = (
     <div className="grid grid-cols-1 gap-3">
-      <Link to="/buyer/orders" className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-primary transition-all group">
+      <Link to="/buyer/orders" className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 hover:border-primary transition-all group">
         <div className="flex justify-between items-start">
           <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center"><Receipt className="w-4 h-4 text-primary" /></div>
           <ArrowRight className="w-4 h-4 text-on-surface-variant group-hover:translate-x-1 transition-transform" />
@@ -210,7 +210,7 @@ export default function ProfilePage() {
         <p className="text-[14px] font-semibold text-on-surface mt-3">Pesanan Saya</p>
         <p className="text-[12px] text-on-surface-variant mt-1">Lihat semua pesanan</p>
       </Link>
-      <Link to="/buyer/cart" className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-primary transition-all group">
+      <Link to="/buyer/cart" className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 hover:border-primary transition-all group">
         <div className="flex justify-between items-start">
           <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center"><ShoppingCart className="w-4 h-4 text-amber-600" /></div>
           <ArrowRight className="w-4 h-4 text-on-surface-variant group-hover:translate-x-1 transition-transform" />
@@ -218,7 +218,7 @@ export default function ProfilePage() {
         <p className="text-[14px] font-semibold text-on-surface mt-3">Keranjang</p>
         <p className="text-[12px] text-on-surface-variant mt-1">Lihat keranjang belanja</p>
       </Link>
-      <Link to="/buyer/wallet" className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:border-primary transition-all group">
+      <Link to="/buyer/wallet" className="bg-surface-container-lowest border border-outline-variant rounded-xl p-4 hover:border-primary transition-all group">
         <div className="flex justify-between items-start">
           <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center"><TrendingUp className="w-4 h-4 text-emerald-600" /></div>
           <ArrowRight className="w-4 h-4 text-on-surface-variant group-hover:translate-x-1 transition-transform" />
@@ -232,8 +232,8 @@ export default function ProfilePage() {
   const buyerOrdersSection = (
     <section>
       <div className="flex justify-between items-end mb-3">
-        <h3 className="text-[16px] lg:text-[18px] font-semibold text-on-surface">Pesanan Terbaru</h3>
-        <Link to="/buyer/orders" className="text-[13px] lg:text-[14px] text-primary font-semibold hover:underline">Lihat semua</Link>
+        <h3 className="text-[16px] font-semibold text-on-surface">Pesanan Terbaru</h3>
+        <Link to="/buyer/orders" className="text-[13px] text-primary font-semibold hover:underline">Lihat semua</Link>
       </div>
       {bo.length === 0 ? (
         <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 text-center">
@@ -253,13 +253,13 @@ export default function ProfilePage() {
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0"><Package className="w-5 h-5 text-on-surface-variant" /></div>
                     <div className="min-w-0">
-                      <p className="text-[13px] lg:text-[14px] font-semibold text-on-surface line-clamp-1">{itemNames || `Order #${o.id}`}</p>
+                      <p className="text-[13px] font-semibold text-on-surface line-clamp-1">{itemNames || `Order #${o.id}`}</p>
                       <p className="text-[11px] text-on-surface-variant">{itemCount} item · {formatDateShort(o.createdAt)}</p>
                     </div>
                   </div>
                   <div className="text-right shrink-0 ml-3">
-                    <span className={cn('inline-flex items-center px-2 py-0.5 rounded-md text-[10px] lg:text-[11px] font-semibold mb-1', badge.className)}>{badge.label}</span>
-                    <p className="text-[13px] lg:text-[14px] font-semibold text-on-surface">{formatCurrency(o.finalTotal || o.totalAmount)}</p>
+                    <span className={cn('inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold mb-1', badge.className)}>{badge.label}</span>
+                    <p className="text-[13px] font-semibold text-on-surface">{formatCurrency(o.finalTotal || o.totalAmount)}</p>
                   </div>
                 </div>
               </Link>
@@ -271,13 +271,13 @@ export default function ProfilePage() {
   );
 
   const recommendedSection = recommendedProducts.length > 0 && (
-    <section className="mt-6">
-      <h3 className="text-[16px] lg:text-[18px] font-semibold text-on-surface mb-3">Rekomendasi untuk Kamu</h3>
-      <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+    <section>
+      <h3 className="text-[16px] font-semibold text-on-surface mb-3">Rekomendasi untuk Kamu</h3>
+      <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4 snap-x snap-mandatory scroll-smooth">
         {recommendedProducts.map((p) => (
           <Link key={p.id} to={`/products/${p.id}`}
-            className="min-w-[180px] lg:min-w-[220px] bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 group shrink-0 hover:border-primary/30 hover:shadow-card-hover transition-all">
-            <div className="h-36 lg:h-44 bg-surface-container flex items-center justify-center overflow-hidden">
+            className="min-w-[160px] w-[160px] bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 group shrink-0 hover:border-primary/30 hover:shadow-card-hover transition-all snap-start">
+            <div className="h-32 bg-surface-container flex items-center justify-center overflow-hidden">
               {p.imageUrl ? (
                 <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
               ) : (
@@ -295,39 +295,39 @@ export default function ProfilePage() {
   );
 
   const financialSummarySection = summary && (summary.buyerWallet !== undefined || summary.sellerIncome !== undefined || summary.driverEarnings !== undefined) && (
-    <div className="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden">
-      <button onClick={() => setShowFinance(!showFinance)} className="w-full p-4 lg:p-5 flex items-center justify-between text-left hover:bg-surface-container/50 transition-colors">
-        <span className="text-[14px] lg:text-[15px] font-semibold text-on-surface flex items-center gap-2">
-          <DollarSign className="w-4 h-4 lg:w-5 lg:h-5 text-primary" /> Ringkasan Keuangan
+    <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+      <button onClick={() => setShowFinance(!showFinance)} className="w-full p-4 flex items-center justify-between text-left hover:bg-surface-container/50 transition-colors">
+        <span className="text-[14px] font-semibold text-on-surface flex items-center gap-2">
+          <DollarSign className="w-4 h-4 text-primary" /> Ringkasan Keuangan
         </span>
-        {showFinance ? <ChevronUp className="w-4 h-4 lg:w-5 lg:h-5 text-outline" /> : <ChevronDown className="w-4 h-4 lg:w-5 lg:h-5 text-outline" />}
+        {showFinance ? <ChevronUp className="w-4 h-4 text-outline" /> : <ChevronDown className="w-4 h-4 text-outline" />}
       </button>
       {showFinance && (
-        <div className="px-4 lg:px-5 pb-4 lg:pb-5 grid grid-cols-2 gap-2 lg:gap-3 mt-2">
+        <div className="px-4 pb-4 grid grid-cols-2 gap-2">
           {summary.buyerWallet !== undefined && (
-            <div className="flex items-center gap-2 lg:gap-3 p-3 rounded-xl bg-primary/5 border border-primary/10">
-              <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-primary/10 flex items-center justify-center"><Wallet className="w-4 h-4 lg:w-5 lg:h-5 text-primary" /></div>
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-primary/5 border border-primary/10">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center"><Wallet className="w-4 h-4 text-primary" /></div>
               <div>
-                <p className="text-[10px] lg:text-[11px] text-on-surface-variant font-semibold">Dompet</p>
-                <p className="text-[14px] lg:text-[16px] font-bold text-primary">{formatCurrency(summary.buyerWallet?.balance || 0)}</p>
+                <p className="text-[10px] text-on-surface-variant font-semibold">Dompet</p>
+                <p className="text-[14px] font-bold text-primary">{formatCurrency(summary.buyerWallet?.balance || 0)}</p>
               </div>
             </div>
           )}
           {summary.sellerIncome !== undefined && (
-            <div className="flex items-center gap-2 lg:gap-3 p-3 rounded-xl bg-emerald-50/50 border border-emerald-100">
-              <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-emerald-100 flex items-center justify-center"><TrendingUp className="w-4 h-4 lg:w-5 lg:h-5 text-emerald-600" /></div>
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-50/50 border border-emerald-100">
+              <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center"><TrendingUp className="w-4 h-4 text-emerald-600" /></div>
               <div>
-                <p className="text-[10px] lg:text-[11px] text-on-surface-variant font-semibold">Penjual</p>
-                <p className="text-[14px] lg:text-[16px] font-bold text-emerald-600">{formatCurrency(summary.sellerIncome?.totalIncome || 0)}</p>
+                <p className="text-[10px] text-on-surface-variant font-semibold">Penjual</p>
+                <p className="text-[14px] font-bold text-emerald-600">{formatCurrency(summary.sellerIncome?.totalIncome || 0)}</p>
               </div>
             </div>
           )}
           {summary.driverEarnings !== undefined && (
-            <div className="flex items-center gap-2 lg:gap-3 p-3 rounded-xl bg-amber-50/50 border border-amber-100">
-              <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-amber-100 flex items-center justify-center"><Truck className="w-4 h-4 lg:w-5 lg:h-5 text-amber-600" /></div>
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-50/50 border border-amber-100">
+              <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center"><Truck className="w-4 h-4 text-amber-600" /></div>
               <div>
-                <p className="text-[10px] lg:text-[11px] text-on-surface-variant font-semibold">Kurir</p>
-                <p className="text-[14px] lg:text-[16px] font-bold text-amber-600">{formatCurrency(summary.driverEarnings?.totalEarnings || 0)}</p>
+                <p className="text-[10px] text-on-surface-variant font-semibold">Kurir</p>
+                <p className="text-[14px] font-bold text-amber-600">{formatCurrency(summary.driverEarnings?.totalEarnings || 0)}</p>
               </div>
             </div>
           )}
